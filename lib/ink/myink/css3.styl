@@ -1,0 +1,57 @@
+vendor(prop,args)
+    -webkit-{prop} args
+    -moz-{prop} args
+    -ms-{prop} args
+    -o-{prop} args
+    {prop} args
+
+box-orient()
+    vendor('box-orient', arguments)
+
+box-pack()
+    vendor('box-pack',arguments)
+
+box-align()
+    vendor('box-align',arguments)
+
+box-ordinal-group()
+    vendor('box-ordinal-group',arguments)
+
+box-direction()
+    vendor('box-direction',arguments)
+
+box-flex-group()
+    vendor('box-flex-group',arguments)
+
+box-lines()
+    vendor('box-lines',arguments)
+
+box-sizing()
+    vendor('box-sizing',arguments)
+
+//on sub-elements of a box
+box-flex()
+    vendor('box-flex',arguments)
+
+box(cols=false,orient=horizontal,align=start)
+    display -webkit-box
+    display -moz-box
+    display -ms-box
+    display -o-box
+    display box
+    box-orient orient
+    box-pack align
+
+    if cols
+        for col,i in cols
+            & > *:nth-child(i)
+                box-flex col
+
+
+
+
+user-select()
+    vendor('user-select',arguments)
+
+border-radius()
+    vendor('border-radius',arguments)

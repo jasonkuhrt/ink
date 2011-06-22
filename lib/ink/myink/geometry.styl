@@ -1,0 +1,55 @@
+fill(color)
+    background-color color
+
+rectangle(w,h=w)
+    width w
+    height h
+
+//Special-case rectangle
+square(size)
+    rectangle size
+
+    //TODO There is a stylus bug that prevents math within border-radius assignment
+    //older versions of firefox (>4) do not support % radi, but later I can do this:
+    //border-radius 50% 
+    oval(w,h=w)
+        rectangle w h
+        rh = w/2
+        rv = h/2
+        border-radius rh / rv
+
+//Special-case oval
+circle(size)
+    oval size
+
+
+
+
+
+
+baseTriangle()
+    border-color transparent
+    border-width 0
+    border-style solid
+    square 0
+
+
+//TODO size should = `gd`, once bug is fixed: https://github.com/LearnBoost/stylus/issues/281
+arrow(direction=up, size=18px, color=black, breadth=false, breadth_ratio=1)
+    if breadth
+        breadth = breadth / 2
+    else
+        breadth = size
+    baseTriangle()
+    border-{oppositeSide(direction)}-color color
+    border-{oppositeSide(direction)}-width size
+
+    border-{counterClockwiseSide(direction)}-width (breadth*breadth_ratio)
+    border-{clockwiseSide(direction)}-width (breadth*breadth_ratio)
+
+
+iconButton(url)
+    resetButton()
+    background-image url(url)
+    background-repeat no-repeat
+    background-position center center

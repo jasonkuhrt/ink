@@ -1,0 +1,74 @@
+flushEnd(orient=both,offset=0)
+    & > *:nth-child({offset+1})
+        if orient is both
+            margin-{getPushSide(vertical)} 0
+            margin-{getPushSide(horizontal)} 0
+        else if orient is horizontal or orient is vertical
+            margin-{getPushSide(orient)} 0
+
+list(orient, gutter=gd, flow_method=box, align=start, offset=0, flush=true,cols=false)
+    //TODO think this over
+    //Instead of using `flushend` function, just start the pushing process one-time later
+    //but this requires support for/of nth-child
+    flush_number = 1
+    flush_number += 1 if flush
+    & > *:nth-child(n+{offset+flush_number})
+        margin-{getPushSide(orient)} gutter
+
+    if flow_method is box
+        box(cols,orient,align)
+        //TODO  apply alignment rules to inline-block/block queues and stacks
+    else if flow_method is inline-block
+        if orient is horizontal
+            display_method = inline-block
+        else if orient is vertical
+            display_method = block
+        & > *:nth-child(n+{offset+1})
+            display display_method
+    
+stack(gutter=gd,flow_method=box,align=start,offset=0,cols=false)
+    list(vertical,gutter,flow_method,align,offset,cols)
+
+queue(gutter=gd,flow_method=box,handle_ul=false,align=start,offset=0,cols=false)
+    list(horizontal,gutter,flow_method,align,offset,cols)
+    if handle_ul is true
+        list-style none
+        & > *:nth-child(n+{offset+1})
+            line-height 0
+
+hbox(cols=false,align=start)
+    box(cols,horizontal,align)
+
+vbox(cols=false,align=start)
+    box(cols,vertical,align)
+
+cbox()
+    hbox(align:center)
+    & > .inner
+        vbox(center)
+
+cblock(size)
+    margin-left auto
+    margin-right auto
+    width size if size
+
+
+hang(hside=left,vside=top, z_index=false)
+    position absolute
+    {hside} 0
+    {vside} 0
+
+    & > .inner
+        position absolute
+        {opposite-position(hside)} 0
+
+    if z isnt false
+        z-index z_index
+
+
+absoluteCenter(orient=vertical,offset=false,limit=start,pos=absolute)
+    position pos unless pos is false
+    margin-{getStart(orient)} offset unless offset is false
+
+    {limitToSide(orient, limit)} 50%
+        
