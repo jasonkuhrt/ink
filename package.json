@@ -1,10 +1,10 @@
 {
-  "name": "nib",
-  "description": "Stylus mixins and utilities",
-  "version": "0.0.8",
+  "name": "ink",
+  "description": "A CSS framework targeted at modern browsers built with stylus",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git://github.com/visionmedia/tablet.git"
+    "url": "git://github.com/jasonkuhrt/ink.git"
   },
   "devDependencies": {
       "connect": "1.4.1"
@@ -12,7 +12,7 @@
     , "stylus": "0.13.x"
     , "canvas": ">= 0.0.1"
   },
-  "author": "TJ Holowaychuk <tj@vision-media.ca>",
-  "main": "lib/nib.js",
+  "author": "Jason Kuhrt <jasonkuhrt@me.com>",
+  "main": "lib/ink.js",
   "engines": { "node": "*" }
 }
