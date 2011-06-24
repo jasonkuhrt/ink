@@ -2,12 +2,6 @@
 @import 'config'
 
 /*
- * Alias "nowrap" as "no-wrap".
- */
-
-no-wrap = unquote('nowrap')
-
-/*
  * Vendor support for the given prop / arguments,
  * optionally specifying the only prefixes to utilize,
  * or those which should be ignored.
@@ -21,84 +15,61 @@ vendor(prop, args, only = null, ignore = null)
       else
         {'-' + prefix + '-' + prop}: args
 
-/*
- * Vendor "box-shadow" support.
- */
 
-box-shadow()
-  vendor('box-shadow', arguments)
-
-/*
- * Vendor "user-size" support.
- */
 
 user-select()
   vendor('user-select', arguments)
 
-/*
- * Vendor "column-count" support.
- */
+
+
+// COLUMN
 
 column-count()
   vendor('column-count', arguments)
 
-/*
- * Vendor "column-gap" support.
- */
-
 column-gap()
   vendor('column-gap', arguments)
 
-/*
- * Vendor "background-size" support.
- */
+
+
+
+
+
+// BACKGROUNDS AND BOARDERS
 
 background-size()
   vendor('background-size', arguments)
 
-/*
- * Vendor "box-sizing" support.
- */
+border-image()
+  vendor('border-image', arguments)
 
-box-sizing()
-  vendor('box-sizing', arguments)
 
-/*
- * Vendor "transform" support.
- */
+
 
 transform()
   vendor('transform', arguments)
 
-/*
- * Vendor "border-image" support.
- */
+transform-origin()
+  vendor('transform-origin',arguments)
 
-border-image()
-  vendor('border-image', arguments)
 
-/*
- * Vendor "transition" support.
- */
+// TRANSITIONS
 
 transition()
-  vendor('transition', arguments, only: webkit moz)
+  vendor('transition', arguments)
 
-/*
- * Opacity with conditional IE support.
- */
+transition-delay()
+  vendor('transition-delay', arguments)
 
-opacity(n)
-  opacity: n
-  if support-for-ie
-    filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=%s)' % round(n * 100)
+transition-duration()
+  vendor('transition-duration', arguments)
 
-/*
- * Alias the "white-space" property.
- */
+transition-timing-function()
+  vendor('transition-timing-function', arguments)
 
-whitespace()
-  white-space: arguments
+transition-property()
+  vendor('transition', arguments)
+
 
 /*
  * Helper for border-radius().
@@ -151,3 +122,58 @@ border-radius()
           -apply-border-radius(pos)
           pos = ()
   vendor('border-radius', pos) unless augmented
+
+
+
+
+
+
+// BOX
+
+box-orient()
+    vendor('box-orient', arguments)
+
+box-pack()
+    vendor('box-pack',arguments)
+
+box-align()
+    vendor('box-align',arguments)
+
+box-ordinal-group()
+    vendor('box-ordinal-group',arguments)
+
+box-direction()
+    vendor('box-direction',arguments)
+
+box-flex-group()
+    vendor('box-flex-group',arguments)
+
+box-lines()
+    vendor('box-lines',arguments)
+
+box-sizing()
+    vendor('box-sizing',arguments)
+
+//on sub-elements of a box
+box-flex()
+    vendor('box-flex',arguments)
+
+box(cols=false,orient=horizontal,align=start)
+    display -webkit-box
+    display -moz-box
+    display -ms-box
+    display -o-box
+    display box
+    box-orient orient
+    box-pack align
+
+    if cols
+        for col,i in cols
+            & > *:nth-child(i)
+                box-flex col
+
+box-shadow()
+  vendor('box-shadow', arguments)
+
+box-sizing()
+  vendor('box-sizing', arguments)

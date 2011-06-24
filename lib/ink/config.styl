@@ -1,12 +1,53 @@
+grid_unit ?= 20px
 
-/*
- * Support for ie defaulting to true.
- */
+yes = true
+on = true
+no = false
+off = false
 
 support-for-ie = true
+vendor-prefixes ?= webkit moz ms official
+
+vertical_push_side = top
+horizontal_push_side = left
+css_sides = top right bottom left
+ignore_side = 'o'
+
+
 
 /*
- * Default vendor prefixes.
+ *  Tag groups
  */
 
-vendor-prefixes ?= webkit moz official
+heading_tags = "h1,h2,h3,h4,h5,h6"
+list_tags = "ul,li,ol,dl,dd,dt"
+text_block_tags = heading_tags +","+ list_tags +","+ ", p"
+
+copy_tags = "strong, em, strike, sub, sup"
+
+text_tags = text_block_tags +","+ copy_tags
+
+
+
+
+form_tags = "fieldset,form,label,legend,input,button"
+
+table_tags = "table,tbody,thead,tr,th,td"
+
+
+//basic functions
+
+negafiy(numbers)
+    for number,i in numbers
+        push_what = type(number) is 'unit'? (- number) : number
+        if i is 0
+            negative_numbers = push_what
+        else
+            push(negative_numbers,push_what)
+    return negative_numbers
+
+unitless(number)
+    (unit(number)) is false
+
+gd(n)
+    grid_unit * n

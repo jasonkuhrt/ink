@@ -5,9 +5,44 @@
 
 no-wrap = unquote('nowrap')
 
-/*
- * Alias of "white-space".
- */
-
 whitespace()
-  white-space: arguments
+  white-space arguments
+
+italics()
+    font-style italic
+
+bold()
+    font-weight bold
+
+roman()
+    font-weight normal
+
+text-case(case)
+    if case is 'up'
+        case = uppercase
+    else if case is 'low'
+        case = lowercase
+    else if case is 'capital'
+        caes = capitalize
+
+    text-transform case
+
+lowercase()
+    text-transform lowercase
+
+capitalize()
+    text-transform capitalize
+
+uppercase()
+    text-transform uppercase
+
+
+typo(size,line_height=size+2)
+    font-size size
+    line-height line_height
+
+//COMBOS
+
+stoutText()
+    uppercase()
+    bold()

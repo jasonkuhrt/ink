@@ -1,4 +1,4 @@
-flushEnd(orient=both,offset=0)
+flush-end(orient=both,offset=0)
     & > *:nth-child({offset+1})
         if orient is both
             margin-{getPushSide(vertical)} 0
@@ -51,24 +51,3 @@ cblock(size)
     margin-left auto
     margin-right auto
     width size if size
-
-
-hang(hside=left,vside=top, z_index=false)
-    position absolute
-    {hside} 0
-    {vside} 0
-
-    & > .inner
-        position absolute
-        {opposite-position(hside)} 0
-
-    if z isnt false
-        z-index z_index
-
-
-absoluteCenter(orient=vertical,offset=false,limit=start,pos=absolute)
-    position pos unless pos is false
-    margin-{getStart(orient)} offset unless offset is false
-
-    {limitToSide(orient, limit)} 50%
-        
