@@ -3,10 +3,10 @@
 -pos(type, args)
   position unquote(type)
   i = 0
-  {args[i]}      args[i + 1] is a 'unit' ? args[i += 1] : 0
+  {args[i]}      args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : 0
 
   if args[i + 1]
-    {args[i += 1]} args[i + 1] is a 'unit' ? args[i += 1] : 0
+    {args[i += 1]} args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : 0
 
 
 

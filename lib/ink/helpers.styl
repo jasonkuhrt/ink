@@ -13,7 +13,7 @@ suppress()
 //source: http://css-tricks.com/snippets/css/cross-browser-opacity/
 opacity(n)
   opacity: n
-  if support-for-ie
+  if support_for_ie
     //ie8
     filter 'progid:DXImageTransform.Microsoft.Alpha(Opacity=%s)' % round(n * 100)
     //ie6-7
@@ -21,10 +21,13 @@ opacity(n)
     ie_prop = 'alpha(opacity=50)' % round(n*100)
     filter unquote(ie_prop)
 
+min-width(w)
+    min-width grid_unit(w)
+
 //source http://css-tricks.com/snippets/css/cross-browser-min-height/
 min-height(h)
-    min-height h
-    if support-for-ie
+    min-height grid_unit(h)
+    if support_for_ie
        //TODO check if the below syntax works, no quotes around h? h+1? other units: %? em?
        height unquote('expression( this.scrollHeight < (h+1) ? h : "auto" )')
 
@@ -46,9 +49,7 @@ min-height(h)
 
 optional-side(prop,n)
     if n isnt ignore_side
-        if unitless(n)
-            n = gd(n)
-        {prop} n
+        {prop} grid_unit(n)
         
 cssShorthand(prop,n)
     count  = length(n)

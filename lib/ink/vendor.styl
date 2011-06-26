@@ -1,4 +1,3 @@
-
 @import 'config'
 
 /*
@@ -7,10 +6,19 @@
  * or those which should be ignored.
  */
 
-vendor(prop, args, only = null, ignore = null)
-  for prefix in vendor-prefixes
+vendorValue(prop,value)
+  for prefix in vendor_prefixes
+    if prefix is "official"
+      {prop} unquote(value)
+    else
+      prefixed_value = "-"+ prefix +"-"+ value  
+      add-property(prop, unquote(prefixed_value))
+    
+      
+vendorProperty(prop, args, only = null, ignore = null)
+  for prefix in vendor_prefixes
     unless (only and !(prefix in only)) or (ignore and prefix in ignore)
-      if official == prefix
+      if prefix is "official"
         {prop}: args
       else
         {'-' + prefix + '-' + prop}: args
@@ -18,17 +26,17 @@ vendor(prop, args, only = null, ignore = null)
 
 
 user-select()
-  vendor('user-select', arguments)
+  vendorProperty('user-select', arguments)
 
 
 
 // COLUMN
 
 column-count()
-  vendor('column-count', arguments)
+  vendorProperty('column-count', arguments)
 
 column-gap()
-  vendor('column-gap', arguments)
+  vendorProperty('column-gap', arguments)
 
 
 
@@ -38,37 +46,37 @@ column-gap()
 // BACKGROUNDS AND BOARDERS
 
 background-size()
-  vendor('background-size', arguments)
+  vendorProperty('background-size', arguments)
 
 border-image()
-  vendor('border-image', arguments)
+  vendorProperty('border-image', arguments)
 
 
 
 
 transform()
-  vendor('transform', arguments)
+  vendorProperty('transform', arguments)
 
 transform-origin()
-  vendor('transform-origin',arguments)
+  vendorProperty('transform-origin',arguments)
 
 
 // TRANSITIONS
 
 transition()
-  vendor('transition', arguments)
+  vendorProperty('transition', arguments)
 
 transition-delay()
-  vendor('transition-delay', arguments)
+  vendorProperty('transition-delay', arguments)
 
 transition-duration()
-  vendor('transition-duration', arguments)
+  vendorProperty('transition-duration', arguments)
 
 transition-timing-function()
-  vendor('transition-timing-function', arguments)
+  vendorProperty('transition-timing-function', arguments)
 
 transition-property()
-  vendor('transition', arguments)
+  vendorProperty('transition', arguments)
 
 
 /*
@@ -80,8 +88,8 @@ transition-property()
     // border-radius: <top | buttom> <left | right> <n>
     y = pos[0]
     x = pos[1]
-    vendor('border-radius-%s%s' % pos, pos[2], only: moz)
-    vendor('border-%s-%s-radius' % pos, pos[2], ignore: moz)
+    vendorProperty('border-radius-%s%s' % pos, pos[2], only: moz)
+    vendorProperty('border-%s-%s-radius' % pos, pos[2], ignore: moz)
   else if pos[0] in (top bottom)
     // border-radius: <top | bottom> <n>
     -apply-border-radius(pos[0] left pos[1])
@@ -121,7 +129,7 @@ border-radius()
         if augmented
           -apply-border-radius(pos)
           pos = ()
-  vendor('border-radius', pos) unless augmented
+  vendorProperty('border-radius', pos) unless augmented
 
 
 
@@ -131,49 +139,45 @@ border-radius()
 // BOX
 
 box-orient()
-    vendor('box-orient', arguments)
+    vendorProperty('box-orient', arguments)
 
 box-pack()
-    vendor('box-pack',arguments)
+    vendorProperty('box-pack',arguments)
 
 box-align()
-    vendor('box-align',arguments)
+    vendorProperty('box-align',arguments)
 
 box-ordinal-group()
-    vendor('box-ordinal-group',arguments)
+    vendorProperty('box-ordinal-group',arguments)
 
 box-direction()
-    vendor('box-direction',arguments)
+    vendorProperty('box-direction',arguments)
 
 box-flex-group()
-    vendor('box-flex-group',arguments)
+    vendorProperty('box-flex-group',arguments)
 
 box-lines()
-    vendor('box-lines',arguments)
+    vendorProperty('box-lines',arguments)
 
 box-sizing()
-    vendor('box-sizing',arguments)
+    vendorProperty('box-sizing',arguments)
 
 //on sub-elements of a box
 box-flex()
-    vendor('box-flex',arguments)
+    vendorProperty('box-flex', arguments)
 
-box(cols=false,orient=horizontal,align=start)
-    display -webkit-box
-    display -moz-box
-    display -ms-box
-    display -o-box
-    display box
-    box-orient orient
-    box-pack align
+box(flexes=false,orient="horizontal",align="start")
+    vendorValue("display","box")
+    box-orient unquote(orient)
+    box-pack unquote(align)
 
-    if cols
-        for col,i in cols
-            & > *:nth-child(i)
-                box-flex col
+    if flexes isnt false
+        for flex,i in flexes
+            & > *:nth-child({i+1})
+                box-flex flex
 
 box-shadow()
-  vendor('box-shadow', arguments)
+  vendorProperty('box-shadow', arguments)
 
 box-sizing()
-  vendor('box-sizing', arguments)
+  vendorProperty('box-sizing', arguments)

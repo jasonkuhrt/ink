@@ -1,12 +1,18 @@
-grid_unit ?= 20px
+gd = 20px
 
 yes = true
 on = true
 no = false
 off = false
 
-support-for-ie = true
-vendor-prefixes ?= webkit moz ms official
+very-fast = 100ms
+fast = 150ms
+average = 200ms
+slow = 300ms
+very-slow = 400ms
+
+support_for_ie = true
+vendor_prefixes ?= webkit moz ms official
 
 vertical_push_side = top
 horizontal_push_side = left
@@ -49,5 +55,9 @@ negafiy(numbers)
 unitless(number)
     (unit(number)) is false
 
-gd(n)
-    grid_unit * n
+grid_unit(n)
+    if unitless(n)
+        unit(n*gd,"px")
+    else
+        n
+        

@@ -6,41 +6,57 @@ flush-end(orient=both,offset=0)
         else if orient is horizontal or orient is vertical
             margin-{getPushSide(orient)} 0
 
-list(orient, gutter=gd, flow_method=box, align=start, offset=0, flush=true,cols=false)
+
+
+
+
+
+
+list(orient, gutter=gd, flow_method="inline-block", align=start, offset=0, flush=true,flexes=false)
     //TODO think this over
     //Instead of using `flushend` function, just start the pushing process one-time later
     //but this requires support for/of nth-child
     flush_number = 1
     flush_number += 1 if flush
     & > *:nth-child(n+{offset+flush_number})
-        margin-{getPushSide(orient)} gutter
+        margin-{getPushSide(orient)} grid_unit(gutter)
 
-    if flow_method is box
-        box(cols,orient,align)
+    if flow_method is "box"
+        box(flexes,orient,align)
+    else
         //TODO  apply alignment rules to inline-block/block queues and stacks
-    else if flow_method is inline-block
-        if orient is horizontal
-            display_method = inline-block
-        else if orient is vertical
-            display_method = block
         & > *:nth-child(n+{offset+1})
-            display display_method
+            display unquote(flow_method)
     
-stack(gutter=gd,flow_method=box,align=start,offset=0,cols=false)
-    list(vertical,gutter,flow_method,align,offset,cols)
+stack(gutter=gd,align=start,offset=0)
+    list("vertical",gutter,"block",align,offset,true,false)
 
-queue(gutter=gd,flow_method=box,handle_ul=false,align=start,offset=0,cols=false)
-    list(horizontal,gutter,flow_method,align,offset,cols)
+queue(gutter=gd,handle_ul=false,align=start,offset=0)
+    list("horizontal",gutter,"inline-block",align,offset,true,false)
     if handle_ul is true
         list-style none
         & > *:nth-child(n+{offset+1})
             line-height 0
 
-hbox(cols=false,align=start)
-    box(cols,horizontal,align)
+box-stack(gutter=gd, align=start, offset=0)
+    list("vertical", gutter, "box", align, offset, false)
 
-vbox(cols=false,align=start)
-    box(cols,vertical,align)
+box-queue(gutter=gd, align=start, offset=0)
+    list("horizontal", gutter, "box", align, offset, false)
+
+
+
+
+
+
+
+
+
+hbox(flexes=false,align=start)
+    box(flexes,"horizontal",align)
+
+vbox(flexes=false,align=start)
+    box(flexes,"vertical",align)
 
 cbox()
     hbox(align:center)
@@ -50,4 +66,4 @@ cbox()
 cblock(size)
     margin-left auto
     margin-right auto
-    width size if size
+    width grid_unit(size) if size or size is 0
