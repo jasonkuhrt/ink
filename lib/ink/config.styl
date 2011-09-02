@@ -1,22 +1,22 @@
-gd = 20px
+gd ?= 20px
 
 yes = true
 on = true
 no = false
 off = false
 
-very-fast = 100ms
-fast = 150ms
-average = 200ms
-slow = 300ms
-very-slow = 400ms
+very-fast ?= 100ms
+fast ?= 150ms
+average ?= 200ms
+slow ?= 300ms
+very-slow ?= 400ms
 
-support_for_ie = true
+support_for_ie ?= true
 vendor_prefixes ?= webkit moz ms official
 
-vertical_push_side = top
-horizontal_push_side = left
-css_sides = top right bottom left
+vertical_push_side = "top"
+horizontal_push_side = "left"
+css_sides = "top" "right" "bottom" "left"
 ignore_side = 'o'
 
 
@@ -32,7 +32,6 @@ text_block_tags = heading_tags +","+ list_tags +","+ ", p"
 copy_tags = "strong, em, strike, sub, sup"
 
 text_tags = text_block_tags +","+ copy_tags
-
 
 
 
@@ -55,9 +54,14 @@ negafiy(numbers)
 unitless(number)
     (unit(number)) is false
 
-grid_unit(n)
-    if unitless(n)
-        unit(n*gd,"px")
+//TODO once stylus supports short circuiting, rewrite this
+grid_unit(args)
+    n = args[0]
+    important = args[1] or ''
+
+    if type(n) is "unit" 
+        if unitless(n)
+            n = unit(n*gd,"px")
+        s("%s %s", n, unquote(important)) 
     else
-        n
-        
+        s("%s %s", n, unquote(important)) 

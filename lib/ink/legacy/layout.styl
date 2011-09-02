@@ -1,0 +1,19 @@
+table-stack(gutter_height)
+    applicable_gutter_height = (gutter_height/2)
+    td
+        padding-top applicable_gutter_height
+        padding-bottom applicable_gutter_height
+    tr:first-child td, tr.first-child td
+        padding-top 0
+    tr:last-child td, tr.last-child td
+        padding-bottom 0
+    
+table-queue(gutter_width)
+    applicable_gutter_width = (gutter_width/2)
+    td
+        padding-left applicable_gutter_width
+        padding-right applicable_gutter_width
+    td:first-child, td.first-child
+        padding-left 0
+    td:last-child, td.last-child
+        padding-right 0

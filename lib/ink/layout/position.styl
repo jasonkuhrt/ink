@@ -3,7 +3,8 @@
 -pos(type, args)
   position unquote(type)
   i = 0
-  {args[i]}      args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : 0
+  if args[i]
+   {args[i]}      args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : args[i + 2] ? grid_unit(args[i + 2]) : 0
 
   if args[i + 1]
     {args[i += 1]} args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : 0
@@ -36,7 +37,7 @@ relative()
   -pos('relative', arguments)
 
 
-hang(hside=left,vside=top, z_index=false)
+hang(hside="left",vside="top", z_index=false)
     absolute hside vside
 
     & > .inner

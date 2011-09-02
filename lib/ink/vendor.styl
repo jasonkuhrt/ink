@@ -14,14 +14,48 @@ vendorValue(prop,value)
       prefixed_value = "-"+ prefix +"-"+ value  
       add-property(prop, unquote(prefixed_value))
     
-      
-vendorProperty(prop, args, only = null, ignore = null)
+//see more at https://developer.mozilla.org/en/CSS/CSS_transitions
+vendor_transition_properties = "transform" "transform-origin"
+
+justVendorValue(val,type,vendor_prefix)
+  if type is "transition-property"
+    for transition_prop,i in val
+      //p transition_prop
+      //p vendor_transition_properties
+      //p transition_prop in vendor_transition_properties
+      if transition_prop in vendor_transition_properties
+        transition_vendor_prop = s('-%s-%s',vendor_prefix,unquote(transition_prop))
+        //p transition_vendor_prop
+        if i is 0
+          new_val = transition_vendor_prop
+        else 
+          push(new_val,transition_vendor_prop) 
+
+      else
+        if i is 0
+          new_val = unquote(transition_prop)
+        else
+          push(new_val,unquote(transition_prop)) 
+
+  new_val = join(",",new_val)
+  p new_val
+  new_val
+
+
+
+vendorProperty(prop, args, only = null, ignore = null, vendor_value=false)
+  
   for prefix in vendor_prefixes
     unless (only and !(prefix in only)) or (ignore and prefix in ignore)
+
       if prefix is "official"
         {prop}: args
+
       else
-        {'-' + prefix + '-' + prop}: args
+        if vendor_value
+          {'-' + prefix + '-' + prop}: justVendorValue(args,vendor_value,prefix)
+        else
+          {'-' + prefix + '-' + prop}: args
 
 
 

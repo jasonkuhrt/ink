@@ -34,8 +34,9 @@ baseTriangle()
     square 0
 
 
+
 //TODO size should = `gd`, once bug is fixed: https://github.com/LearnBoost/stylus/issues/281
-arrow(direction=up, size=18px, color=black, breadth=false, breadth_ratio=1)
+arrow(direction="up", size=18px, color=black, breadth=false, breadth_ratio=1)
     if breadth
         breadth = breadth / 2
     else
@@ -47,10 +48,13 @@ arrow(direction=up, size=18px, color=black, breadth=false, breadth_ratio=1)
     border-{counterClockwiseSide(direction)}-width (breadth*breadth_ratio)
     border-{clockwiseSide(direction)}-width (breadth*breadth_ratio)
 
+    // inline content will not render as squares and therefore arrows will be stretched. 
+    // this only matters if the arrow class were to be applied to a inline tag, like <span>
+    display inline-block
+
 
 iconButton(url)
     resetButton()
-    background-image url(url)
+    background-image url(unquote(url))
     background-repeat no-repeat
     background-position center center
-

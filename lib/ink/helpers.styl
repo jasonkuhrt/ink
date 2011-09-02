@@ -21,15 +21,7 @@ opacity(n)
     ie_prop = 'alpha(opacity=50)' % round(n*100)
     filter unquote(ie_prop)
 
-min-width(w)
-    min-width grid_unit(w)
 
-//source http://css-tricks.com/snippets/css/cross-browser-min-height/
-min-height(h)
-    min-height grid_unit(h)
-    if support_for_ie
-       //TODO check if the below syntax works, no quotes around h? h+1? other units: %? em?
-       height unquote('expression( this.scrollHeight < (h+1) ? h : "auto" )')
 
 
 
@@ -44,12 +36,9 @@ min-height(h)
 
 
 
-
-
-
 optional-side(prop,n)
     if n isnt ignore_side
-        {prop} grid_unit(n)
+        add-property(prop,grid_unit(n))
         
 cssShorthand(prop,n)
     count  = length(n)
@@ -82,15 +71,15 @@ getPushSide(orient)
 
 getStart(orient)
     if orient is vertical
-        top
+        "top"
     else if orient is horizontal
-        left
+        "left"
 
 getEnd(orient)
     if orient is vertical
-        bottom
+        "bottom"
     else if orient is horizontal
-        right
+        "right"
 
 
 
@@ -102,20 +91,20 @@ getEnd(orient)
 convertTerminusToSide(orient,terminus)
     if orient is 'vertical'
         if terminus is 'start'
-            top
+            "top"
         else if terminus is 'end'
-            bottom
+            "bottom"
     else if orient is 'horizontal'
         if terminus is 'start'
-            left
+            "left"
         else if terminus is 'end'
-            right
+            "right"
 
 convertDirectionToSide(direction)
-    if direction is up
-        top
-    else if direction is down
-        bottom
+    if direction is "up"
+        "top"
+    else if direction is "down"
+        "bottom"
     else
         direction
 //TODO support corners like down right
@@ -129,23 +118,81 @@ oppositeSide(side)
 //TODO support corner turning, like going from "bottom left" to "bottom right" to "top left" etc.
 clockwiseSide(side)
     side = convertDirectionToSide(side)
-    if side is top
-        right
-    else if side is right
-        bottom
-    else if side is bottom
-        left
-    else if side is left
-        top
+    if side is "top"
+        "right"
+    else if side is "right"
+        "bottom"
+    else if side is "bottom"
+        "left"
+    else if side is "left"
+        "top"
 
 counterClockwiseSide(side)
     side = convertDirectionToSide(side)
-    if side is top
-        left
-    else if side is left
-        bottom
-    else if side is bottom
-        right
-    else if side is right
-        top
+    if side is "top"
+        "left"
+    else if side is "left"
+        "bottom"
+    else if side is "bottom"
+        "right"
+    else if side is "right"
+        "top"
 
+
+
+//enhance css to support grid-unit like values
+
+
+top()
+    top grid_unit(arguments)
+right()
+    right grid_unit(arguments)
+bottom()
+    bottom grid_unit(arguments)
+left()
+    left grid_unit(arguments)
+
+
+
+padding()
+    cssShorthand 'padding', arguments
+padding-left()
+    padding-left grid_unit(arguments)
+padding-right()
+    padding-right grid_unit(arguments)
+padding-top()
+    padding-top grid_unit(arguments)
+padding-bottom()
+    padding-bottom grid_unit(arguments)
+
+
+margin()
+    cssShorthand 'margin', arguments
+margin-left()
+    margin-left grid_unit(arguments)
+margin-right()
+    margin-right grid_unit(arguments)
+margin-top()
+    margin-top grid_unit(arguments)
+margin-bottom()
+    margin-bottom grid_unit(arguments)
+
+
+width()
+    width grid_unit(arguments)
+height()
+    height grid_unit(arguments)
+
+
+min-width()
+    min-width grid_unit(arguments)
+max-width()
+    max-width grid_unit(arguments)
+max-height()
+    max-height grid_unit(arguments)
+//source http://css-tricks.com/snippets/css/cross-browser-min-height/
+min-height()
+    min-height grid_unit(arguments)
+    if support_for_ie
+       //TODO check if the below syntax works, no quotes around h? h+1? other units: %? em?
+       height unquote('expression( this.scrollHeight < (h+1) ? h : "auto" )')
