@@ -4,10 +4,20 @@
   position unquote(type)
   i = 0
   if args[i]
-   {args[i]}      args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : args[i + 2] ? grid_unit(args[i + 2]) : 0
+    if args[i + 1] is a 'unit'
+      vendorize-unit(args[i],args[i += 1])
+    else if args[i + 2]
+      //TODO check if it is correct to use + instead of += below
+      vendorize-unit(args[i],args[i + 2])
+    else 
+      {args[i]} 0
 
   if args[i + 1]
-    {args[i += 1]} args[i + 1] is a 'unit' ? grid_unit(args[i += 1]) : 0
+    prop = args[i += 1]
+    if args[i + 1] is a 'unit' 
+      vendorize-unit(prop,args[i += 1])
+    else
+      {prop} 0
 
 
 

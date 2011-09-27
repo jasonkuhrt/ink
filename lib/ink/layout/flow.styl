@@ -20,7 +20,7 @@ list(orient, gutter=gd, flow_method="inline-block", align=start, offset=0, flush
     flush_number = 1
     flush_number += 1 if flush
     & > *:nth-child(n+{offset+flush_number})
-        {move_method}-{getPushSide(orient)} grid_unit(gutter)
+        vendorize-unit("#{move_method}-#{getPushSide(orient)}",gutter)
 
     if flow_method is "box"
         box(flexes,orient,align)
@@ -69,5 +69,5 @@ cblock(size=false)
     margin-left auto
     margin-right auto
 
-    width grid_unit(size) if size or type(size) is "number"
+    vendorize-unit("width",size) if size or type(size) is "number"
 center-block = cblock
