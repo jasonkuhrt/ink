@@ -7,10 +7,12 @@
     "url": "git://github.com/jasonkuhrt/ink.git"
   },
   "devDependencies": {
-      "connect": "1.4.1"
-    , "jade": "0.11.0"
-    , "stylus": "0.13.x"
+      "connect": ">= 1.4.1"
+    , "jade": ">= 0.11.0"
+    , "stylus": ">= 0.16.x"
     , "canvas": ">= 0.0.1"
+    , "coffee-script": ">= 1.x"
+    , "sugar": ">= 0.0.1"
   },
   "author": "Jason Kuhrt <jasonkuhrt@me.com>",
   "main": "lib/ink.js",
