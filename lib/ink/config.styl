@@ -1,5 +1,3 @@
-gd ?= 20px
-
 yes = true
 on = true
 no = false
@@ -12,7 +10,6 @@ slow ?= 300ms
 very-slow ?= 400ms
 
 support_for_ie ?= true
-vendor_prefixes ?= webkit moz ms official
 
 vertical_push_side = "top"
 horizontal_push_side = "left"
@@ -39,6 +36,10 @@ form_tags = "fieldset,form,label,legend,input,button"
 
 table_tags = "table,tbody,thead,tr,th,td"
 
+base_font_size ?= 10px
+base_leading ?= 8px
+base_lineheight = base_font_size + base_leading
+gu ?= base_lineheight
 
 //basic functions
 
@@ -55,13 +56,15 @@ unitless(number)
     (unit(number)) is false
 
 //TODO once stylus supports short circuiting, rewrite this
-grid_unit(args)
+/*
+grid-unit(args)
     n = args[0]
     important = args[1] or ''
 
     if type(n) is "unit" 
         if unitless(n)
-            n = unit(n*gd,"px")
+            n = unit(n*gu,"px")
         s("%s %s", n, unquote(important)) 
     else
         s("%s %s", n, unquote(important)) 
+*/

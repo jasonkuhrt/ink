@@ -1,78 +1,40 @@
 @import 'config'
 
-/*
- * Vendor support for the given prop / arguments,
- * optionally specifying the only prefixes to utilize,
- * or those which should be ignored.
- */
-
-vendorValue(prop,value)
-  for prefix in vendor_prefixes
-    if prefix is "official"
-      {prop} unquote(value)
-    else
-      prefixed_value = "-"+ prefix +"-"+ value  
-      add-property(prop, unquote(prefixed_value))
-    
-//see more at https://developer.mozilla.org/en/CSS/CSS_transitions
-vendor_transition_properties = "transform" "transform-origin"
-
-justVendorValue(val,type,vendor_prefix)
-  if type is "transition-property"
-    for transition_prop,i in val
-      //p transition_prop
-      //p vendor_transition_properties
-      //p transition_prop in vendor_transition_properties
-      if transition_prop in vendor_transition_properties
-        transition_vendor_prop = s('-%s-%s',vendor_prefix,unquote(transition_prop))
-        //p transition_vendor_prop
-        if i is 0
-          new_val = transition_vendor_prop
-        else 
-          push(new_val,transition_vendor_prop) 
-
-      else
-        if i is 0
-          new_val = unquote(transition_prop)
-        else
-          push(new_val,unquote(transition_prop)) 
-
-  new_val = join(",",new_val)
-  p new_val
-  new_val
-
-
-
-vendorProperty(prop, args, only = null, ignore = null, vendor_value=false)
-  
-  for prefix in vendor_prefixes
-    unless (only and !(prefix in only)) or (ignore and prefix in ignore)
-
-      if prefix is "official"
-        {prop}: args
-
-      else
-        if vendor_value
-          {'-' + prefix + '-' + prop}: justVendorValue(args,vendor_value,prefix)
-        else
-          {'-' + prefix + '-' + prop}: args
-
-
 
 user-select()
-  vendorProperty('user-select', arguments)
+    vendorize-property('user-select', arguments)
 
-
+user-modify()
+    vendorize-property('user-modify',arguments)
 
 // COLUMN
 
+columns()
+  vendorize-property('columns', arguments)
+
 column-count()
-  vendorProperty('column-count', arguments)
+  vendorize-property('column-count', arguments)
+
+column-span()
+  vendorize-property('column-span', arguments)
 
 column-gap()
-  vendorProperty('column-gap', arguments)
+  vendorize-property('column-gap', arguments)
 
+column-width()
+  vendorize-property('column-width', arguments)
 
+column-rule()
+  vendorize-property('column-rule', arguments)
+
+column-rule-width()
+  vendorize-property('column-rule-width', arguments)
+
+column-rule-style()
+  vendorize-property('column-rule-style', arguments)
+
+column-rule-color()
+  vendorize-property('column-rule-color', arguments)
 
 
 
@@ -80,19 +42,48 @@ column-gap()
 // BACKGROUNDS AND BOARDERS
 
 background-size()
-  vendorProperty('background-size', arguments)
+  vendorize-property('background-size', arguments)
+
+background-origin()
+  vendorize-property('background-origin', arguments)
+
+background-clip()
+  vendorize-property('background-clip', arguments)
+
+
 
 border-image()
-  vendorProperty('border-image', arguments)
+  vendorize-property('border-image', arguments)
+
+text-overflow()
+  vendorize-property('text-overflow', arguments)
+
+font-feature-settings()
+  vendorize-property('font-feature-settings', arguments)
+
+hyphens()
+  vendorize-property('hyphens',arguments)
+
+object-position()
+  vendorize-property('object-position', arguments)
+
+object-fit()
+  vendorize-property('object-fit', arguments)
 
 
 
 
 transform()
-  vendorProperty('transform', arguments)
+  vendorize-property('transform', arguments)
 
 transform-origin()
-  vendorProperty('transform-origin',arguments)
+  vendorize-property('transform-origin',arguments)
+
+backface-visibility()
+  vendorize-property('backface-visibility',arguments)
+
+
+
 
 
 // TRANSITIONS
@@ -111,6 +102,77 @@ transition-timing-function()
 
 transition-property()
   vendorProperty('transition', arguments)
+
+
+
+
+
+/*
+
+BOX
+
+http://flexiejs.com/playground/
+
+In the Firefox implementation, if the parent element has a width value that is auto or less than the children’s width combined, that value is ignored and the parent is resized to accommodate all of its children. This is not what we want; if we’ve set a width value for the parent element, we want that width to be respected.
+I don’t believe either WebKit or Firefox have done this incorrectly as such. The module isn’t clear about which of these methods is right. But I would say that the WebKit implementation respects the values we assign to elements and so is more predictable and thus easier to work with.
+
+
+As you may be able to deduce, this value triggers the Flex Box layout but makes the element run inline in the document flow, without creating a line break. Firefox’s -moz-box implementation is actually incorrect and behaves like -moz-inline-box
+
+
+*/
+
+display()
+    vendorize-property("display",arguments)
+
+box-orient()
+    vendorize-property('box-orient', arguments)
+
+box-pack()
+   vendorize-property('box-pack',arguments)
+
+box-align()
+    vendorize-property('box-align',arguments)
+
+box-ordinal-group()
+    vendorize-property('box-ordinal-group',arguments)
+
+box-direction()
+    vendorize-property('box-direction',arguments)
+
+box-flex-group()
+    vendorize-property('box-flex-group',arguments)
+
+box-lines()
+    vendorize-property('box-lines',arguments)
+
+box-sizing()
+    vendorize-property('box-sizing',arguments)
+
+//on sub-elements of a box
+box-flex()
+    vendorize-property('box-flex', arguments)
+/*
+box(flexes=false,orient="horizontal",align="start")
+    vendorValue("display","box")
+    box-orient unquote(orient)
+    box-pack unquote(align)
+
+    if flexes isnt false
+        for flex,i in flexes
+            & > *:nth-child({i+1})
+                box-flex flex
+*/
+box-shadow()
+  vendorize-property('box-shadow', arguments)
+
+box-sizing()
+  vendorize-property('box-sizing', arguments)
+ 
+
+
+
+
 
 
 /*
@@ -168,50 +230,92 @@ border-radius()
 
 
 
+/*
+TODO
+//cross-browser support for units
+- clean up how 0<unit> cases are handled
+- factor out a few functions...
+- how can short-circuiting help? Check once stylus supports it
+*/
+vendorize-unit(prop,args)
+    n = args[0]
+    important = args[1] or ''
+
+    if type(n) is "unit" 
+        n = 0 if n == 0
+
+        if unit(n) is "rem"
+            nRem = n
+            nPx = unit(n,"px") * base_font_size
+            {prop} s("%s %s", nPx, unquote(important))
+            {prop} s("%s %s", nRem, unquote(important)) 
+            
+        else
+            if unitless(n) and n > 0
+                n = unit(n*gu,"px")
+            {prop} s("%s %s", n, unquote(important)) 
+    else
+        {prop} s("%s %s", n, unquote(important)) 
 
 
-// BOX
 
-box-orient()
-    vendorProperty('box-orient', arguments)
 
-box-pack()
-    vendorProperty('box-pack',arguments)
 
-box-align()
-    vendorProperty('box-align',arguments)
+line-height()
+    vendorize-unit("font-size",arguments)
+font-size()
+    vendorize-unit("font-size",arguments)
 
-box-ordinal-group()
-    vendorProperty('box-ordinal-group',arguments)
 
-box-direction()
-    vendorProperty('box-direction',arguments)
+top()
+    vendorize-unit("top",arguments)
+right()
+    vendorize-unit("right",arguments)
+bottom()
+    vendorize-unit("bottom",arguments)
+left()
+    vendorize-unit("left",arguments)
 
-box-flex-group()
-    vendorProperty('box-flex-group',arguments)
 
-box-lines()
-    vendorProperty('box-lines',arguments)
 
-box-sizing()
-    vendorProperty('box-sizing',arguments)
+padding()
+    css-shorthand('padding',arguments) 
+padding-left()
+    vendorize-unit("padding-letf",arguments)
+padding-right()
+    vendorize-unit("padding-right",arguments)
+padding-top()
+    vendorize-unit("padding-top",arguments)
+padding-bottom()
+    vendorize-unit("padding-bottom",arguments)
 
-//on sub-elements of a box
-box-flex()
-    vendorProperty('box-flex', arguments)
 
-box(flexes=false,orient="horizontal",align="start")
-    vendorValue("display","box")
-    box-orient unquote(orient)
-    box-pack unquote(align)
 
-    if flexes isnt false
-        for flex,i in flexes
-            & > *:nth-child({i+1})
-                box-flex flex
+margin()
+    css-shorthand('margin',arguments) 
+margin-left()
+    vendorize-unit("margin-left",arguments)
+margin-right()
+    vendorize-unit("margin-right",arguments)
+margin-top()
+    vendorize-unit("margin-top",arguments)
+margin-bottom()
+    vendorize-unit("margin-bottom",arguments)
 
-box-shadow()
-  vendorProperty('box-shadow', arguments)
 
-box-sizing()
-  vendorProperty('box-sizing', arguments)
+width()
+    vendorize-unit("width",arguments)
+
+
+min-width()
+    vendorize-unit("min-width",arguments)
+max-width()
+    vendorize-unit("max-width",arguments)
+max-height()
+    vendorize-unit("max-height",arguments)
+
+//http://css-tricks.com/snippets/css/cross-browser-min-height/
+min-height()
+    vendorize-unit("min-height",arguments)
+    if support_for_ie
+       //TODO check if the below syntax works, no quotes around h? h+1? other units: %? em?

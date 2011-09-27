@@ -38,9 +38,9 @@ opacity(n)
 
 optional-side(prop,n)
     if n isnt ignore_side
-        add-property(prop,grid_unit(n))
+        vendorize-unit(prop,n)
         
-cssShorthand(prop,n)
+css-shorthand(prop,n)
     count  = length(n)
     order = 0 0 0 0
 
@@ -140,59 +140,7 @@ counterClockwiseSide(side)
 
 
 
-//enhance css to support grid-unit like values
-
-
-top()
-    top grid_unit(arguments)
-right()
-    right grid_unit(arguments)
-bottom()
-    bottom grid_unit(arguments)
-left()
-    left grid_unit(arguments)
 
 
 
-padding()
-    cssShorthand 'padding', arguments
-padding-left()
-    padding-left grid_unit(arguments)
-padding-right()
-    padding-right grid_unit(arguments)
-padding-top()
-    padding-top grid_unit(arguments)
-padding-bottom()
-    padding-bottom grid_unit(arguments)
 
-
-margin()
-    cssShorthand 'margin', arguments
-margin-left()
-    margin-left grid_unit(arguments)
-margin-right()
-    margin-right grid_unit(arguments)
-margin-top()
-    margin-top grid_unit(arguments)
-margin-bottom()
-    margin-bottom grid_unit(arguments)
-
-
-width()
-    width grid_unit(arguments)
-height()
-    height grid_unit(arguments)
-
-
-min-width()
-    min-width grid_unit(arguments)
-max-width()
-    max-width grid_unit(arguments)
-max-height()
-    max-height grid_unit(arguments)
-//source http://css-tricks.com/snippets/css/cross-browser-min-height/
-min-height()
-    min-height grid_unit(arguments)
-    if support_for_ie
-       //TODO check if the below syntax works, no quotes around h? h+1? other units: %? em?
-       height unquote('expression( this.scrollHeight < (h+1) ? h : "auto" )')

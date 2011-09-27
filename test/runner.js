@@ -46,13 +46,19 @@ function test(test, fn) {
     style.render(function(err, actual){
       if (err) throw err;
       fs.readFile(csspath, 'utf8', function(err, expected){
-        if (err) throw err;
-        expected += '\n';
-        if (actual == expected) {
-          fn();
-        } else {
-          fn(actual, expected);
-        }
+        // By running the expected CSS through stylus, we format it so that we do not
+        // need to be concerned with writing the exact same thing, i.e.
+        // same line numbers, spacing, location of braces, etc.
+        // This way we only have to focus on if the CSS rules are the same, or not.
+        expected_css = stylus(expected).render(function(err,expected){
+          if (err) throw err;
+          if (actual == expected) {
+            fn();
+          } else {
+            fn(actual, expected);
+          }
+        }) 
+        
       });
     });
   });
@@ -80,7 +86,7 @@ fs.readdir(__dirname + '/cases', function(err, files){
     if (!curr) return done();
     process.stderr.write('    \033[90m' + curr + '\033[0m');
     test(curr, function(actual, expected){
-      if (actual) {
+      if (actual != undefined || actual != null) {
         ++failures;
         console.error('\r  \033[31m✖\033[0m \033[90m' + curr + '\033[0m\n');
         diff(actual, expected);
