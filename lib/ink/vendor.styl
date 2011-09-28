@@ -251,7 +251,7 @@ vendorize-unit(prop,args)
             {prop} s("%s %s", nRem, unquote(important)) 
             
         else
-            if unitless(n) and n > 0
+            if unitless(n) and n isnt 0
                 n = unit(n*gu,"px")
             {prop} s("%s %s", n, unquote(important)) 
     else
@@ -262,7 +262,7 @@ vendorize-unit(prop,args)
 
 
 line-height()
-    vendorize-unit("font-size",arguments)
+    vendorize-unit("line-height",arguments)
 font-size()
     vendorize-unit("font-size",arguments)
 
