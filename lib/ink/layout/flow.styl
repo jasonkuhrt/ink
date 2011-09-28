@@ -13,14 +13,15 @@ flush-end(orient=both,offset=0)
 
 
 //TODO unquote align within box align assignment
-list(orient, gutter=gd, flow_method="inline-block", align=start, offset=0, flush=true,flexes=false,move_method="margin")
+list(orient, gutter=gu, flow_method="inline-block", align=start, offset=0, flush=true,flexes=false,move_method="margin")
     //TODO think this over
     //Instead of using `flushend` function, just start the pushing process one-time later
     //but this requires support for/of nth-child
     flush_number = 1
     flush_number += 1 if flush
     & > *:nth-child(n+{offset+flush_number})
-        vendorize-unit("#{move_method}-#{getPushSide(orient)}",gutter)
+        prop = move_method +"-"+ getPushSide(orient)
+        vendorize-unit(prop,gutter)
 
     if flow_method is "box"
         box(flexes,orient,align)
@@ -30,28 +31,21 @@ list(orient, gutter=gd, flow_method="inline-block", align=start, offset=0, flush
             display unquote(flow_method)
             vertical-align unquote(align)
     
-stack(gutter=gd,align="top",offset=0,move_method="margin")
+stack(gutter=gu,align="top",offset=0,move_method="margin")
     list("vertical",gutter,"block",align,offset,true,false,move_method)
 
-queue(gutter=gd,handle_ul=false,align="top",offset=0,move_method="margin",flush=true)
+queue(gutter=gu,handle_ul=false,align="top",offset=0,move_method="margin",flush=true)
     list("horizontal",gutter,"inline-block",align,offset,flush,false,move_method)
     if handle_ul is true
         list-style none
         & > *:nth-child(n+{offset+1})
             line-height 0
 
-box-stack(gutter=gd, align=start, offset=0,flush=true,flexes=false,move_method="margin")
+box-stack(gutter=gu, align=start, offset=0,flush=true,flexes=false,move_method="margin")
     list("vertical", gutter, "box", align, offset, flush,flexes,move_method)
 
 box-queue(gutter=gd, align=start, offset=0,flush=true,flexes=false,move_method="margin")
     list("horizontal", gutter, "box", align, offset, flush,flexes,move_method)
-
-
-
-
-
-
-
 
 
 hbox(flexes=false,align=start)
@@ -71,3 +65,47 @@ cblock(size=false)
 
     vendorize-unit("width",size) if size or type(size) is "number"
 center-block = cblock
+
+
+
+/*
+TODO
+- vgutter
+- hgutter
+*/
+matrix(length,gutter=gu,align="top",offset=0,move_method="margin",flush=true)
+    // +2 because being flush means ignore gutters on the first item
+    // and START doing stuff on the second item
+    flush_number = 0
+    flush_number += 2 if flush
+
+
+    // gutters
+    & > *:nth-child(n+{offset+flush_number})
+        prop = move_method +"-"+ getPushSide("horizontal")
+        vendorize-unit(prop,gutter)
+    // +1 so that we START at the beginning of the second row
+    & > *:nth-child(n+{offset+length+1})
+        prop = move_method +"-"+ getPushSide("vertical")
+        vendorize-unit(prop,gutter)
+
+
+    // flush-horizontal
+    // +1 so that we START at the beginning of the second row
+    //TODO
+    //- flush number?
+    & > *:nth-child({length}n+{offset+length+1})
+        prop = move_method +"-"+ getPushSide("horizontal")
+        {prop} 0
+    
+
+    //TODO  apply alignment rules to inline-block/block queues and stacks
+    // use a simpler selector when we want all the children
+    // +1 because i.e. offsetting 1 means START at 2
+    stricter_selector = offset is 0 ? "" : s(":nth-child(n+%s)",offset+1)
+    & > *{stricter_selector}
+        display inline-block
+        vertical-align unquote(align)
+
+
+
