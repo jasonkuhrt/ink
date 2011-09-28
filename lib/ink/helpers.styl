@@ -43,7 +43,7 @@ optional-side(prop,n)
 css-shorthand(prop,n)
     count       = length(n)
     order       = 0 0 0 0
-    prop_prefix = prop ? prop+"-" : ""
+    prop_prefix = prop isnt false ? prop+"-" : ""
 
     if count is 2
         order = 0 1 0 1

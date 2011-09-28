@@ -24,6 +24,18 @@ circle(size)
 
 
 
+multi-border(b1,b1_offsets=0,b2=false,b2_offsets=0)
+    &:before
+        content ""
+        z-index -1
+        absolute b1_offsets
+        border b1
+    if b2 isnt false
+        &:after
+            content ""
+            z-index -1
+            absolute b2_offsets
+            border b2
 
 
 
