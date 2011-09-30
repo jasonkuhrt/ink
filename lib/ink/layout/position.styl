@@ -39,15 +39,18 @@
 
 fixed()
   position fixed
-  css-shorthand('', arguments)
+  if arguments
+    css-shorthand('', arguments)
 
 absolute()
   position absolute
-  css-shorthand('', arguments)
+  if arguments
+    css-shorthand('', arguments)
 
 relative()
   position relative
-  css-shorthand('', arguments)
+  if arguments
+    css-shorthand('', arguments)
 
 
 hang(hside="left",vside="top", z_index=false)
