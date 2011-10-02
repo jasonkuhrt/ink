@@ -36,20 +36,19 @@
  *     fixed:    top 5px left 5px
  * 
  */
-
 fixed()
   position fixed
-  if arguments
+  if length(arguments) > 0
     css-shorthand('', arguments)
 
 absolute()
   position absolute
-  if arguments
+  if length(arguments) > 0
     css-shorthand('', arguments)
 
 relative()
   position relative
-  if arguments
+  if length(arguments) > 0
     css-shorthand('', arguments)
 
 
