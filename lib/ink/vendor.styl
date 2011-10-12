@@ -89,19 +89,20 @@ backface-visibility()
 // TRANSITIONS
 
 transition()
-  vendorProperty('transition', arguments)
+  p(arguments)
+  vendorize-property('transition', arguments)
 
 transition-delay()
-  vendorProperty('transition-delay', arguments)
+  vendorize-property('transition-delay', arguments)
 
 transition-duration()
-  vendorProperty('transition-duration', arguments)
+  vendorize-property('transition-duration', arguments)
 
 transition-timing-function()
-  vendorProperty('transition-timing-function', arguments)
+  vendorize-property('transition-timing-function', arguments)
 
 transition-property()
-  vendorProperty('transition', arguments)
+  vendorize-property('transition', arguments)
 
 
 
@@ -225,7 +226,7 @@ border-radius()
         if augmented
           -apply-border-radius(pos)
           pos = ()
-  vendorProperty('border-radius', pos) unless augmented
+  vendorize-property('border-radius', pos) unless augmented
 
 
 

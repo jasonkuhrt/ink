@@ -23,7 +23,7 @@ circle(size)
     oval size
 
 
-
+//TODO allow user to specify border side: top left right bottom
 multi-border(b1,b1_offsets=0,b2=false,b2_offsets=0)
     &:before
         content ""
@@ -39,7 +39,7 @@ multi-border(b1,b1_offsets=0,b2=false,b2_offsets=0)
 
 
 
-baseTriangle()
+base-triangle()
     border-color transparent
     border-width 0
     border-style solid
@@ -53,7 +53,7 @@ arrow(direction="up", size=18px, color=black, breadth=false, breadth_ratio=1)
         breadth = breadth / 2
     else
         breadth = size
-    baseTriangle()
+    base-triangle()
     border-{oppositeSide(direction)}-color color
     border-{oppositeSide(direction)}-width size
 

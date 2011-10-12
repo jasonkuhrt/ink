@@ -139,7 +139,7 @@ vendor_index.register "moz webkit", "
 vendor_index.register "*", "
  object-fit object-position
  transform transform-origin backface-visibility
- transition
+ transition transition-delay transition-duration transition-timeing-function transition-property
  animation animation-delay animation-direction animation-duration animation-fill-mode animation-iteration-count animation-name animation-play-state animation-timing-function
  box-orient box-pack box-align box-ordinal-group box-direction box-flex-group box-lines box-sizing
  hyphens
@@ -161,7 +161,7 @@ exports.vendorizeProperty = (property,value)->
     #utils.assertString(property, 'property')
 
     #utils.assertType(value, 'expression', 'expr')
-    value = utils.unwrap(value).first
+    #value = utils.unwrap(value).first
     #value = bifs.unquote(value)
     #utils.assertString(value, 'expr')
 
