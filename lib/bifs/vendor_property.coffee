@@ -65,7 +65,9 @@ class VendorProperty
         if @is_vendor_value
             if styl_prefix
                 styl_prefix = styl_prefix.nodes[0].string
-            new nodes.Property([styl_property], styl_prefix+styl_value)
+            #TODO the utils.unwrap method here is... confusing, why? I added it to handle ((val)) situations, but these situations are not present 100% of the time
+            n = new nodes.Property([styl_property], styl_prefix+utils.unwrap(styl_value).first)
+            n
         else
             new nodes.Property([styl_prefix,styl_property], styl_value)
         
@@ -107,7 +109,9 @@ class VendorIndex
 
     get: (property,value)->
         got_property = @properties[property.string]
-        if got_property and (not got_property.is_vendor_value or got_property.value is value.string)
+        #TODO there are 3 or checks here. The 3rd is for vendor-values, the 2 is also for that? but was buggy and failed? but I kept it just in case it was for other reasons?
+        # and the 1st is for... normal vendor-properties?
+        if got_property and (not got_property.is_vendor_value or got_property.value is value.string or got_property.value is value?.nodes[0]?.nodes[0]?.string)
             got_property.generateDeclarations(value)
         # the declaration property or declaration value have no associated vendor
         else
@@ -152,7 +156,7 @@ vendor_index.register "*", "
 
 
 
-exports.vendorizeProperty = (property,value)->
+(exports.vendorizeProperty = (property,value)->
 
     # ASSERTING
     
@@ -165,18 +169,13 @@ exports.vendorizeProperty = (property,value)->
     #value = bifs.unquote(value)
     #utils.assertString(value, 'expr')
 
-    
-    #console.log property.nodeName
     if property.nodeName is "function"
         #property.params.nodes.push value
-        #console.log property.block.nodes[0]
         #a=new nodes.Function(property.name,property.params,property.block)
         new nodes.Property(["color"],value)
-        
-        
     else
         vendor_index.get(property,value)
 
     
     
-
+).raw = true
