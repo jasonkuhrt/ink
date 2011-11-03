@@ -145,7 +145,7 @@ vendor_index.register "*", "
  transform transform-origin backface-visibility
  transition transition-delay transition-duration transition-timeing-function transition-property
  animation animation-delay animation-direction animation-duration animation-fill-mode animation-iteration-count animation-name animation-play-state animation-timing-function
- box-orient box-pack box-align box-ordinal-group box-direction box-flex-group box-lines box-sizing
+ box-orient box-pack box-align box-ordinal-group box-direction box-flex box-flex-group box-lines box-sizing
  hyphens
  user-modify user-select
  display:box"
