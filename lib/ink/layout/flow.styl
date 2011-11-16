@@ -1,14 +1,45 @@
-flush-end(orient=both,offset=0)
-    & > *:nth-child({offset+1})
-        if orient is both
-            margin-{getPushSide(vertical)} 0
-            margin-{getPushSide(horizontal)} 0
-        else if orient is horizontal or orient is vertical
-            margin-{getPushSide(orient)} 0
+// TODO the $display is ugly here.... 
 
 
+// offset=1 is a good default because it means appear flush, as in, the first item doesn't need to have a gutter
+flow-gutter(gutter=1,box_part="margin",offset=1,orient,$display=false)
+    nth_selector = offset ? ":nth-child(n+"+offset+")" : ""        // "
+    & > *{nth_selector}
+        push_from_prop = box_part +"-"+ oppositeSide(getPushSide(orient))
+        vendorize-unit(push_from_prop,gutter)
+
+        if $display
+            display unquote($display)
+
+h-gutter(gutter=1,box_part="margin",offset=1,$display=false)
+    flow-gutter(gutter,box_part,offset,"horizontal",$display)
+
+v-gutter(gutter=1,box_part="margin",offset=1,$display=false)
+    flow-gutter(gutter,box_part,offset,"vertical",$display)
 
 
+stack(gutter=gu,offset=1,box_part="margin")
+    v-gutter(gutter,box_part,offset,"block")
+
+// WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
+queue(gutter=gu,offset=1,box_part="margin",selector=false)
+    hgutter = gutter[0]
+    vgutter = gutter[1] || gutter[0]
+
+    hpush_prop = box_part +"-right" 
+    vpush_prop = box_part +"-bottom" 
+
+    item_selector = selector ? selector : "*"
+
+    if offset is 1
+        queue_selector = "& > "+ item_selector
+    else
+        queue_selector = "& > "+item_selector+":nth-child(n+"+offset+")" //"
+
+    {queue_selector}
+        vendorize-unit(hpush_prop,hgutter)
+        vendorize-unit(vpush_prop,vgutter)
+        display inline-block
 
 
 
@@ -31,15 +62,7 @@ list(orient, gutter=gu, flow_method="inline-block", align=start, offset=0, flush
             display unquote(flow_method)
             vertical-align unquote(align)
     
-stack(gutter=gu,align="top",offset=0,move_method="margin")
-    list("vertical",gutter,"block",align,offset,true,false,move_method)
 
-queue(gutter=gu,handle_ul=false,align="top",offset=0,move_method="margin",flush=true)
-    list("horizontal",gutter,"inline-block",align,offset,flush,false,move_method)
-    if handle_ul is true
-        list-style none
-        & > *:nth-child(n+{offset+1})
-            line-height 0
 
 box-stack(gutter=gu, align=start, offset=0,flush=true,flexes=false,move_method="margin")
     list("vertical", gutter, "box", align, offset, flush,flexes,move_method)
@@ -65,7 +88,6 @@ cblock(size=false)
 
     vendorize-unit("width",size) if size or type(size) is "number"
 center-block = cblock
-
 
 
 /*
