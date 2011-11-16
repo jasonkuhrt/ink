@@ -1,0 +1,28 @@
+@import "ink/without_classes"
+.test1
+    h-gutter()
+.test2
+    h-gutter 1px, "margin", 0
+.test3
+    h-gutter 1rem, "padding", 4
+
+
+.test4
+    v-gutter()
+.test5
+    v-gutter 1px, "margin", 0
+.test6
+    v-gutter 1rem, "padding", 4
+
+.test7
+    stack()
+.test8
+    queue()
+.test9
+    queue(4 5)
+.test10
+    queue(4,2)
+.test11
+    queue(gutter:0 1,selector:".b")
+.test12
+    queue(gutter:2px,selector:".b")
