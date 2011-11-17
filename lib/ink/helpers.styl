@@ -5,6 +5,10 @@ suppress()
     display none
 
 
+disable(functional=false)
+    cursor default
+    user-select none
+    pointer-events none if !functional
 
 /*
  * Opacity with conditional IE support.
