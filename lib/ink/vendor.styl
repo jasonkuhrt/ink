@@ -239,7 +239,7 @@ TODO
 */
 vendorize-unit(prop,args)
     n = args[0]
-    important = args[1] or ''
+    important = args[1] isnt null ? args[1] : ''
 
     if type(n) is "unit" 
         n = 0 if n == 0

@@ -1,0 +1,51 @@
+// WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
+queue(gutter=o 1 o o,alignment=false false,offset=1,box_part="margin",selector=false,flush=true)
+    item_selector = selector ? selector : "*"
+
+    if offset is 1
+        queue_selector = "& > "+ item_selector
+    else
+        queue_selector = "& > "+item_selector+":nth-child(n+"+offset+")" //"
+
+    {queue_selector}
+        css-shorthand(box_part,gutter)
+        display inline-block
+
+    queue-flush(flush,item_selector,box_part)
+    queue-align(alignment,queue_selector)
+
+
+
+
+queue-flush(flush,item_selector,box_part)
+    hflush = flush[0]
+    vflush = flush[1] isnt null ? flush[1] : flush[0]
+    t_push_prop = box_part +"-top" 
+    r_push_prop = box_part +"-right" 
+    b_push_prop = box_part +"-bottom" 
+    l_push_prop = box_part +"-left" 
+    // non-DRY is because of a bug: https://github.com/LearnBoost/stylus/issues/462
+    if hflush and vflush
+        & > {item_selector}:first-child
+            {l_push_prop} 0
+            {t_push_prop} 0
+        & > {item_selector}:last-child
+            {r_push_prop} 0
+            {b_push_prop} 0
+    else if hflush
+        & > {item_selector}:first-child
+            {l_push_prop} 0
+        & > {item_selector}:last-child
+            {r_push_prop} 0
+    else if vflush
+        & > {item_selector}:first-child
+            {t_push_prop} 0
+        & > {item_selector}:last-child
+            {b_push_prop} 0
+
+queue-align(alignment=false false,queue_selector="")
+    if alignment[0]
+        text-align alignment[0]
+    if alignment[1]
+        {queue_selector}
+            vertical-align alignment[1]

@@ -47,6 +47,11 @@ optional-side(prop,n)
 css-shorthand(prop,n)
     count       = length(n)
     order       = 0 0 0 0
+    // Very important to keep the '-' here, because
+    // it is possible the sides will be iterated upon
+    // like for positional sides: `top`, `left` etc.
+    // which would break if the dash was present
+    // By keeping the dsah here we only use it when needed
     prop_prefix = prop isnt false ? prop+"-" : ""
 
     if count is 2
@@ -58,8 +63,15 @@ css-shorthand(prop,n)
     else if count isnt 1
         warn('your count is wrong')
 
-    for side,i in css_sides
-        optional-side(prop_prefix+side,n[order[i]])
+    // When prop is false, it means we want to iterate
+    // over the sides, since unlike prop, there are 
+    // always 4 sides. I.e. top/right/bottom/left may all
+    // be assigned 'auto', but that still has to be iterated below
+    if prop isnt false and count is 1
+        vendorize-unit(prop,n)
+    else
+        for side,i in css_sides
+            optional-side(prop_prefix+side,n[order[i]])
 
 
 

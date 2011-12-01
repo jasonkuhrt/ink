@@ -2,7 +2,7 @@
 
 
 // offset=1 is a good default because it means appear flush, as in, the first item doesn't need to have a gutter
-flow-gutter(gutter=1,box_part="margin",offset=1,orient,$display=false)
+queue-gutter(gutter=1,box_part="margin",offset=1,orient,$display=false)
     nth_selector = offset ? ":nth-child(n+"+offset+")" : ""        // "
     & > *{nth_selector}
         push_from_prop = box_part +"-"+ oppositeSide(getPushSide(orient))
@@ -12,34 +12,24 @@ flow-gutter(gutter=1,box_part="margin",offset=1,orient,$display=false)
             display unquote($display)
 
 h-gutter(gutter=1,box_part="margin",offset=1,$display=false)
-    flow-gutter(gutter,box_part,offset,"horizontal",$display)
+    queue-gutter(gutter,box_part,offset,"horizontal",$display)
 
 v-gutter(gutter=1,box_part="margin",offset=1,$display=false)
-    flow-gutter(gutter,box_part,offset,"vertical",$display)
+    queue-gutter(gutter,box_part,offset,"vertical",$display)
 
 
 stack(gutter=gu,offset=1,box_part="margin")
     v-gutter(gutter,box_part,offset,"block")
 
-// WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
-queue(gutter=gu,offset=1,box_part="margin",selector=false)
-    hgutter = gutter[0]
-    vgutter = gutter[1] || gutter[0]
 
-    hpush_prop = box_part +"-right" 
-    vpush_prop = box_part +"-bottom" 
 
-    item_selector = selector ? selector : "*"
-
-    if offset is 1
-        queue_selector = "& > "+ item_selector
-    else
-        queue_selector = "& > "+item_selector+":nth-child(n+"+offset+")" //"
-
-    {queue_selector}
-        vendorize-unit(hpush_prop,hgutter)
-        vendorize-unit(vpush_prop,vgutter)
-        display inline-block
+show-bug()
+    some_prop = "margin-right"
+    some_condition = true
+    .some-selector
+        color red
+        if some_condition
+            {some_prop} 0
 
 
 
