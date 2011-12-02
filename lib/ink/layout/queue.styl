@@ -1,5 +1,5 @@
 // WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
-queue(gutter=o 1 o o,alignment=false false,offset=1,box_part="margin",selector=false,flush=true)
+queue(gutter=o 1 o o,alignment=false top,offset=1,box_part="margin",selector=false,flush=true)
     item_selector = selector ? selector : "*"
 
     if offset is 1
@@ -43,7 +43,7 @@ queue-flush(flush,item_selector,box_part)
         & > {item_selector}:last-child
             {b_push_prop} 0
 
-queue-align(alignment=false false,queue_selector="")
+queue-align(alignment=false top,queue_selector="")
     if alignment[0]
         text-align alignment[0]
     if alignment[1]
