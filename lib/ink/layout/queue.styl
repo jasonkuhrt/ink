@@ -1,5 +1,5 @@
 // WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
-queue(gutter=o 1 o o,alignment=false top,offset=1,box_part="margin",selector=false,flush=true)
+queue(gutter=o,alignment=false top,offset=1,box_part="margin",selector=false,flush=true)
     item_selector = selector ? selector : "*"
 
     if offset is 1
@@ -11,7 +11,8 @@ queue(gutter=o 1 o o,alignment=false top,offset=1,box_part="margin",selector=fal
         css-shorthand(box_part,gutter)
         display inline-block
 
-    queue-flush(flush,item_selector,box_part)
+    if gutter isnt ignore_side
+        queue-flush(flush,item_selector,box_part)
     queue-align(alignment,queue_selector)
 
 

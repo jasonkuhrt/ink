@@ -239,23 +239,24 @@ TODO
 */
 vendorize-unit(prop,args)
     n = args[0]
-    important = args[1] isnt null ? args[1] : ''
+    if n isnt ignore_side
+        important = args[1] isnt null ? args[1] : ''
 
-    if type(n) is "unit" 
-        n = 0 if n == 0
+        if type(n) is "unit" 
+            n = 0 if n == 0
 
-        if unit(n) is "rem"
-            nRem = n
-            nPx = unit(n,"px") * base_font_size
-            {prop} s("%s %s", nPx, unquote(important))
-            {prop} s("%s %s", nRem, unquote(important)) 
-            
+            if unit(n) is "rem"
+                nRem = n
+                nPx = unit(n,"px") * base_font_size
+                {prop} s("%s %s", nPx, unquote(important))
+                {prop} s("%s %s", nRem, unquote(important)) 
+                
+            else
+                if unitless(n) and n isnt 0
+                    n = unit(n*gu,"px")
+                {prop} s("%s %s", n, unquote(important)) 
         else
-            if unitless(n) and n isnt 0
-                n = unit(n*gu,"px")
             {prop} s("%s %s", n, unquote(important)) 
-    else
-        {prop} s("%s %s", n, unquote(important)) 
 
 
 

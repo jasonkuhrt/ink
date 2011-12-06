@@ -63,15 +63,16 @@ css-shorthand(prop,n)
     else if count isnt 1
         warn('your count is wrong')
 
-    // When prop is false, it means we want to iterate
-    // over the sides, since unlike prop, there are 
-    // always 4 sides. I.e. top/right/bottom/left may all
-    // be assigned 'auto', but that still has to be iterated below
-    if prop isnt false and count is 1
-        vendorize-unit(prop,n)
-    else
-        for side,i in css_sides
-            optional-side(prop_prefix+side,n[order[i]])
+    if n isnt ignore_side
+        // When prop is false, it means we want to iterate
+        // over the sides, since unlike prop, there are 
+        // always 4 sides. I.e. top/right/bottom/left may all
+        // be assigned 'auto', but that still has to be iterated below
+        if prop isnt false and count is 1
+            vendorize-unit(prop,n)
+        else
+            for side,i in css_sides
+                optional-side(prop_prefix+side,n[order[i]])
 
 
 
