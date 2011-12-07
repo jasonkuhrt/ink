@@ -45,8 +45,12 @@ queue-flush(flush,item_selector,box_part)
             {b_push_prop} 0
 
 queue-align(alignment=false top,queue_selector="")
-    if alignment[0]
-        text-align alignment[0]
-    if alignment[1]
+    halign = alignment[0]
+    valign = alignment[1] is null ? top : alignment[1]
+
+    if halign 
+        text-align halign
+
+    if valign
         {queue_selector}
-            vertical-align alignment[1]
+            vertical-align valign
