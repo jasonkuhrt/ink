@@ -45,34 +45,35 @@ optional-side(prop,n)
         vendorize-unit(prop,n)
         
 css-shorthand(prop,n)
-    count       = length(n)
-    order       = 0 0 0 0
-    // Very important to keep the '-' here, because
-    // it is possible the sides will be iterated upon
-    // like for positional sides: `top`, `left` etc.
-    // which would break if the dash was present
-    // By keeping the dsah here we only use it when needed
-    prop_prefix = prop isnt false ? prop+"-" : ""
-
-    if count is 2
-        order = 0 1 0 1
-    else if count is 3
-        order = 0 1 2 1
-    else if count is 4
-        order = 0 1 2 3
-    else if count isnt 1
-        warn('your count is wrong')
-
     if n isnt ignore_side
-        // When prop is false, it means we want to iterate
-        // over the sides, since unlike prop, there are 
-        // always 4 sides. I.e. top/right/bottom/left may all
-        // be assigned 'auto', but that still has to be iterated below
-        if prop isnt false and count is 1
-            vendorize-unit(prop,n)
-        else
-            for side,i in css_sides
-                optional-side(prop_prefix+side,n[order[i]])
+        format       = length(n)
+        order       = 0 0 0 0
+        // Very important to keep the '-' here, because
+        // it is possible the sides will be iterated upon
+        // like for positional sides: `top`, `left` etc.
+        // which would break if the dash was present
+        // By keeping the dsah here we only use it when needed
+        prop_prefix = prop isnt false ? prop+"-" : ""
+
+        if format is 2
+            order = 0 1 0 1
+        else if format is 3
+            order = 0 1 2 1
+        else if format is 4
+            order = 0 1 2 3
+        else if format isnt 1
+            warn('your format is wrong')
+
+        if n isnt ignore_side
+            // When prop is false, it means we want to iterate
+            // over the sides, since unlike prop, there are 
+            // always 4 sides. I.e. top/right/bottom/left may all
+            // be assigned 'auto', but that still has to be iterated below
+            if prop isnt false and format is 1
+                vendorize-unit(prop,n)
+            else
+                for side,i in css_sides
+                    optional-side(prop_prefix+side,n[order[i]])
 
 
 
@@ -81,23 +82,69 @@ css-shorthand(prop,n)
 //SIDES
 
 
-getPushSide(orient)
-    if orient is vertical
+getPushSide(orientation)
+    if orientation is "vertical"
         return vertical_push_side
-    else if orient is horizontal
+    else if orientation is "horizontal"
         return horizontal_push_side
 
-getStart(orient)
-    if orient is vertical
+getStart(orientation)
+    if orientation is "vertical"
         "top"
-    else if orient is horizontal
+    else if orientation is "horizontal"
         "left"
+    else
+        throw "#{orientation} is not a valid orientation"
 
-getEnd(orient)
-    if orient is vertical
+getEnd(orientation)
+    if orientation is "vertical"
         "bottom"
-    else if orient is horizontal
+    else if orientation is "horizontal"
         "right"
+
+start-side(orientation)
+    getStart(orientation)
+
+end-side(orientation)
+    getEnd(orientation)
+
+has-clockhand-side(sought_side,clockhand)
+    return get-clockhand-side(sought_side, clockhand) isnt ignore_side
+
+has-clockhand-sides(sought_sides,clockhand)
+    each sought_side in sought_sides
+        if get-clockhand-side(sought_side, clockhand) isnt ignore_side
+            return false
+    return true
+
+get-clockhand-side(sought_side, clockhand)
+    format = length(clockhand)
+    if format is 1
+        return clockhand 
+
+    else if format is 2
+        if sought_side is "top" or sought_side is "bottom"
+            sought_side_i = 0
+        else
+            sought_side_i = 1
+        return clockhand[sought_side_i]
+
+    else if format is 3
+        // TODO
+
+    else if format is 4
+        if sought_side is "top"
+           sought_side_i = 0
+        else if sought_side is "right"
+           sought_side_i = 1
+        else if sought_side is "bottom"
+           sought_side_i = 2
+        else if sought_side is "left"
+           sought_side_i = 3
+        else
+           throw "#{sought_side} is not a valid side to seek. It should be one of: top, right, bottom, left"
+
+        return clockhand[sought_side_i]
 
 
 

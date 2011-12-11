@@ -1,50 +1,16 @@
 // WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
-queue(gutter=o,alignment=false top,offset=1,box_part="margin",selector=false,flush=true)
-    item_selector = selector ? selector : "*"
-
-    if offset is 1
-        queue_selector = "& > "+ item_selector
-    else
-        queue_selector = "& > "+item_selector+":nth-child(n+"+offset+")" //"
-
-    {queue_selector}
+queue(gutter=o,alignment=false top,offset=1,box_part="margin",selector="*",flush=null)
+    list_selector = build-list-selector(selector,offset)
+    {list_selector}
         css-shorthand(box_part,gutter)
         display inline-block
 
-    if gutter isnt ignore_side
-        queue-flush(flush,item_selector,box_part)
-    queue-align(alignment,queue_selector)
+    list-flush-logic(flush,item_selector,box_part,"horizontal",gutter)
+    queue-align(alignment,list_selector)
 
 
 
-
-queue-flush(flush,item_selector,box_part)
-    hflush = flush[0]
-    vflush = flush[1] isnt null ? flush[1] : flush[0]
-    t_push_prop = box_part +"-top" 
-    r_push_prop = box_part +"-right" 
-    b_push_prop = box_part +"-bottom" 
-    l_push_prop = box_part +"-left" 
-    // non-DRY is because of a bug: https://github.com/LearnBoost/stylus/issues/462
-    if hflush and vflush
-        & > {item_selector}:first-child
-            {l_push_prop} 0
-            {t_push_prop} 0
-        & > {item_selector}:last-child
-            {r_push_prop} 0
-            {b_push_prop} 0
-    else if hflush
-        & > {item_selector}:first-child
-            {l_push_prop} 0
-        & > {item_selector}:last-child
-            {r_push_prop} 0
-    else if vflush
-        & > {item_selector}:first-child
-            {t_push_prop} 0
-        & > {item_selector}:last-child
-            {b_push_prop} 0
-
-queue-align(alignment=false top,queue_selector="")
+queue-align(alignment=false top,list_selector="")
     halign = alignment[0]
     valign = alignment[1] is null ? top : alignment[1]
 
@@ -52,5 +18,5 @@ queue-align(alignment=false top,queue_selector="")
         text-align halign
 
     if valign
-        {queue_selector}
+        {list_selector}
             vertical-align valign

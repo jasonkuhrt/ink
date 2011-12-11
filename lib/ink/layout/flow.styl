@@ -2,25 +2,69 @@
 
 
 // offset=1 is a good default because it means appear flush, as in, the first item doesn't need to have a gutter
-queue-gutter(gutter=1,box_part="margin",offset=1,orient,$display=false)
-    nth_selector = offset ? ":nth-child(n+"+offset+")" : ""        // "
-    & > *{nth_selector}
-        push_from_prop = box_part +"-"+ oppositeSide(getPushSide(orient))
-        vendorize-unit(push_from_prop,gutter)
-
+queue-gutter(gutter=5,selector="*",box_part="margin",offset=1,$display=false)
+    list_selector = build-list-selector(selector,offset)
+    {list_selector}
         if $display
             display unquote($display)
-
-h-gutter(gutter=1,box_part="margin",offset=1,$display=false)
-    queue-gutter(gutter,box_part,offset,"horizontal",$display)
-
-v-gutter(gutter=1,box_part="margin",offset=1,$display=false)
-    queue-gutter(gutter,box_part,offset,"vertical",$display)
+        if gutter isnt ignore_side
+            css-shorthand(box_part,gutter)
 
 
-stack(gutter=gu,offset=1,box_part="margin")
-    v-gutter(gutter,box_part,offset,"block")
+h-gutter(gutter=o 1 o o,selector=false,box_part="margin",offset=1,$display=false)
+    queue-gutter(gutter,box_part,offset,$display)
 
+v-gutter(gutter=1 o o o,selector=false,box_part="margin",offset=1,$display=false)
+    queue-gutter(gutter,box_part,offset,$display)
+
+
+stack(gutter=o, selector="*", box_part="margin", flush=null, offset=1)
+    list_selector = build-list-selector(selector,offset)
+    {list_selector}
+        display block
+        css-shorthand(box_part,gutter)
+
+    list-flush-logic(flush,item_selector,box_part,"vertical",gutter)
+
+
+
+build-list-selector(item_selector="*",offset=1)
+    if offset is 1
+        return "& > "+ item_selector
+    else
+        return "& > "+item_selector+":nth-child(n+"+offset+")" //"
+
+list-flush-logic(flush,item_seleector,box_part,orientation,gutter)
+    // flush can be:
+    // null             automatically resolve flush
+    // false [bool]     turn flush off
+    // true [bool]      force flush on both sides
+
+    if flush isnt false and flush isnt null
+        // user explicitly passed in flush
+        // must be: true, true false, or false true
+        list-flush(flush,selector,box_part,orientation)
+    else if flush is null
+        // automatically resolve flush
+        if gutter isnt ignore_side
+            // optimization: stop if gutter is not used
+
+            // get flush for start and end separately, users are not forced to have all or nothing with flushes
+            flush = has-clockhand-side(start-side(orientation), gutter)
+            push(flush,has-clockhand-side(end-side(orientation), gutter))
+
+            list-flush(flush,selector,box_part,orientation)
+
+list-flush(flush,item_selector,box_part,orientation)
+    start_flush = flush[0]
+    end_flush   = flush[1] isnt null ? flush[1] : flush[0]
+
+    if start_flush
+        & > {item_selector}:first-child
+            {box_part}-{start-side(orientation)} 0
+    if end_flush
+        & > {item_selector}:last-child
+            {box_part}-{end-side(orientation)} 0
 
 
 show-bug()
