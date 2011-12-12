@@ -13,12 +13,12 @@ list-gutter(gutter=o,selector="*",box_part="margin",offset=1,$display=false)
 h-gutter(h_gutter=o 1 o o,selector="*",box_part="margin",offset=1)
     gutter = o h_gutter o o
     list-gutter(gutter,selector,box_part,offset)
-    list-flush-logic(flush,selector,box_part,"horizontal",gutter)
+    list-flush-logic(null,selector,box_part,"horizontal",gutter)
 
 v-gutter(v_gutter=1,selector="*",box_part="margin",offset=1)
     gutter = v_gutter o o o
     list-gutter(gutter,selector,box_part,offset)
-    list-flush-logic(flush,selector,box_part,"vertical",gutter)
+    list-flush-logic(null,selector,box_part,"vertical",gutter)
 
 
 stack(gutter=o, selector="*", box_part="margin", flush=null, offset=1)
