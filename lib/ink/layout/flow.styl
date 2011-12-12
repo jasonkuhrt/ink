@@ -2,29 +2,28 @@
 
 
 // offset=1 is a good default because it means appear flush, as in, the first item doesn't need to have a gutter
-queue-gutter(gutter=5,selector="*",box_part="margin",offset=1,$display=false)
+list-gutter(gutter=o,selector="*",box_part="margin",offset=1,$display=false)
     list_selector = build-list-selector(selector,offset)
     {list_selector}
         if $display
             display unquote($display)
-        if gutter isnt ignore_side
-            css-shorthand(box_part,gutter)
+        css-shorthand(box_part,gutter)
 
 
-h-gutter(gutter=o 1 o o,selector=false,box_part="margin",offset=1,$display=false)
-    queue-gutter(gutter,box_part,offset,$display)
+h-gutter(h_gutter=o 1 o o,selector="*",box_part="margin",offset=1)
+    gutter = o h_gutter o o
+    list-gutter(gutter,selector,box_part,offset)
+    list-flush-logic(flush,selector,box_part,"horizontal",gutter)
 
-v-gutter(gutter=1 o o o,selector=false,box_part="margin",offset=1,$display=false)
-    queue-gutter(gutter,box_part,offset,$display)
+v-gutter(v_gutter=1,selector="*",box_part="margin",offset=1)
+    gutter = v_gutter o o o
+    list-gutter(gutter,selector,box_part,offset)
+    list-flush-logic(flush,selector,box_part,"vertical",gutter)
 
 
 stack(gutter=o, selector="*", box_part="margin", flush=null, offset=1)
-    list_selector = build-list-selector(selector,offset)
-    {list_selector}
-        display block
-        css-shorthand(box_part,gutter)
-
-    list-flush-logic(flush,item_selector,box_part,"vertical",gutter)
+    list-gutter(gutter,selector,box_part,offset,"block")
+    list-flush-logic(flush,selector,box_part,"vertical",gutter)
 
 
 
