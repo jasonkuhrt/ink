@@ -6,7 +6,7 @@ list-gutter(gutter=o,selector="*",box_part="margin",offset=1,list_selector=null,
     {list_selector}
         css-shorthand(box_part,gutter)
 
-    list-flush-logic(flush,selector,box_part,orientation,gutter)
+    list-flush-auto(flush,selector,box_part,orientation,gutter)
 
 
 
@@ -31,7 +31,7 @@ build-list-selector(item_selector="*",offset=1)
     else
         return "& > "+item_selector+":nth-child(n+"+offset+")" //"
 
-list-flush-logic(flush,item_seleector,box_part,orientation,gutter)
+list-flush-auto(flush,item_seleector,box_part,orientation,gutter)
     // flush can be:
     // null             automatically resolve flush
     // false [bool]     turn flush off

@@ -9,18 +9,18 @@ rectangle(w,h=w)
 square(size)
     rectangle size
 
-    //TODO There is a stylus bug that prevents math within border-radius assignment
-    //older versions of firefox (>4) do not support % radi, but later I can do this:
-    //border-radius 50% 
-    oval(w,h=w)
-        rectangle w h
-        rh = w/2
-        rv = h/2
-        border-radius rh / rv
+//TODO There is a stylus bug that prevents math within border-radius assignment
+//older versions of firefox (>4) do not support % radi, but later I can do this:
+//border-radius 50% 
+oval(w, h=w)
+    rectangle(w,h)
+    rh = w/2
+    rv = h/2
+    border-radius rh / rv
 
 //Special-case oval
 circle(size)
-    oval size
+    oval(size)
 
 
 //TODO allow user to specify border side: top left right bottom
