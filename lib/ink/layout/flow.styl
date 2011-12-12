@@ -1,31 +1,29 @@
-// TODO the $display is ugly here.... 
-
-
 // offset=1 is a good default because it means appear flush, as in, the first item doesn't need to have a gutter
-list-gutter(gutter=o,selector="*",box_part="margin",offset=1,$display=false)
-    list_selector = build-list-selector(selector,offset)
+list-gutter(gutter=o,selector="*",box_part="margin",offset=1,list_selector=null,orientation,flush=null)
+    if list_selector is null
+        list_selector = build-list-selector(selector,offset)
+
     {list_selector}
-        if $display
-            display unquote($display)
         css-shorthand(box_part,gutter)
 
+    list-flush-logic(flush,selector,box_part,orientation,gutter)
 
+
+
+// TODO h-gutter and v-gutter seem stupid
 h-gutter(h_gutter=o 1 o o,selector="*",box_part="margin",offset=1)
     gutter = o h_gutter o o
-    list-gutter(gutter,selector,box_part,offset)
-    list-flush-logic(null,selector,box_part,"horizontal",gutter)
+    list-gutter(gutter,selector,box_part,offset,null,"horizontal")
 
 v-gutter(v_gutter=1,selector="*",box_part="margin",offset=1)
     gutter = v_gutter o o o
-    list-gutter(gutter,selector,box_part,offset)
-    list-flush-logic(null,selector,box_part,"vertical",gutter)
-
+    list-gutter(gutter,selector,box_part,offset,null,"vertical")
 
 stack(gutter=o, selector="*", box_part="margin", flush=null, offset=1)
-    list-gutter(gutter,selector,box_part,offset,"block")
-    list-flush-logic(flush,selector,box_part,"vertical",gutter)
-
-
+    list_selector = build-list-selector(selector,offset)
+    {list_selector}
+        display block
+    list-gutter(gutter,selector,box_part,offset,list_selector,"vertical",flush)
 
 build-list-selector(item_selector="*",offset=1)
     if offset is 1
@@ -66,6 +64,7 @@ list-flush(flush,item_selector,box_part,orientation)
             {box_part}-{end-side(orientation)} 0
 
 
+/*
 show-bug()
     some_prop = "margin-right"
     some_condition = true
@@ -73,7 +72,7 @@ show-bug()
         color red
         if some_condition
             {some_prop} 0
-
+*/
 
 
 //TODO unquote align within box align assignment

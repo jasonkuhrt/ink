@@ -2,21 +2,18 @@
 queue(gutter=o,alignment=false top,offset=1,box_part="margin",selector="*",flush=null)
     list_selector = build-list-selector(selector,offset)
     {list_selector}
-        css-shorthand(box_part,gutter)
         display inline-block
-
-    list-flush-logic(flush,item_selector,box_part,"horizontal",gutter)
+    list-gutter(gutter,selector,box_part,offset,list_selector,"horizontal",flush)
     queue-align(alignment,list_selector)
 
 
-
 queue-align(alignment=false top,list_selector="")
-    halign = alignment[0]
-    valign = alignment[1] is null ? top : alignment[1]
+    h_align = alignment[0]
+    v_align = alignment[1] is null ? top : alignment[1]
 
-    if halign 
-        text-align halign
+    if h_align 
+        text-align h_align
 
-    if valign
+    if v_align
         {list_selector}
-            vertical-align valign
+            vertical-align v_align
