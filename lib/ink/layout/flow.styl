@@ -11,12 +11,20 @@ list-gutter(gutter=o,selector="*",box_part="margin",offset=1,list_selector=null,
 
 
 // TODO h-gutter and v-gutter seem stupid
-h-gutter(h_gutter=o 1 o o,selector="*",box_part="margin",offset=1)
-    gutter = o h_gutter o o
+h-gutter(h_gutter=1,selector="*",box_part="margin",offset=1)
+
+    l_gutter = h_gutter[0]
+    r_gutter = h_gutter[1] is null ? h_gutter[0] : h_gutter[1]
+    gutter   = o r_gutter o l_gutter
+
     list-gutter(gutter,selector,box_part,offset,null,"horizontal")
 
 v-gutter(v_gutter=1,selector="*",box_part="margin",offset=1)
-    gutter = v_gutter o o o
+
+    t_gutter = v_gutter[0]
+    b_gutter = v_gutter[1] is null ? v_gutter[0] : v_gutter[1]
+    gutter   = t_gutter o b_gutter o
+    
     list-gutter(gutter,selector,box_part,offset,null,"vertical")
 
 stack(gutter=o, selector="*", box_part="margin", flush=null, offset=1)
