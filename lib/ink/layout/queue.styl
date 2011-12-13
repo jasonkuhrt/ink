@@ -1,6 +1,17 @@
 // WARNING: queue must be invoked with () because only in that context are spaced NOT counted as arg separation
 queue(gutter=o,alignment=false top,offset=1,box_part="margin",selector="*",flush=null)
     list_selector = build-list-selector(selector,offset)
+    white-space nowrap
+    {list_selector}
+        display inline-block
+        white-space normal
+    list-gutter(gutter,selector,box_part,offset,list_selector,"horizontal",flush)
+    queue-align(alignment,list_selector)
+
+
+
+fluid-matrix(gutter=o, alignment=false top, offset=1, box_part="margin", selector="*", flush=null)
+    list_selector = build-list-selector(selector,offset)
     {list_selector}
         display inline-block
     list-gutter(gutter,selector,box_part,offset,list_selector,"horizontal",flush)
