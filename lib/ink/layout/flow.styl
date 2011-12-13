@@ -14,7 +14,7 @@ list-gutter(gutter=o,selector="*",box_part="margin",offset=1,list_selector=null,
 h-gutter(h_gutter=1,selector="*",box_part="margin",offset=1)
 
     l_gutter = h_gutter[0]
-    r_gutter = h_gutter[1] is null ? h_gutter[0] : h_gutter[1]
+    r_gutter = h_gutter[1] is null ? o : h_gutter[1]
     gutter   = o r_gutter o l_gutter
 
     list-gutter(gutter,selector,box_part,offset,null,"horizontal")
@@ -22,7 +22,7 @@ h-gutter(h_gutter=1,selector="*",box_part="margin",offset=1)
 v-gutter(v_gutter=1,selector="*",box_part="margin",offset=1)
 
     t_gutter = v_gutter[0]
-    b_gutter = v_gutter[1] is null ? v_gutter[0] : v_gutter[1]
+    b_gutter = v_gutter[1] is null ? o : v_gutter[1]
     gutter   = t_gutter o b_gutter o
     
     list-gutter(gutter,selector,box_part,offset,null,"vertical")
