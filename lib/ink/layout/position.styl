@@ -52,13 +52,16 @@ relative()
     css-shorthand('', arguments)
 
 
-hang(hside="left",vside="top", z_index=false)
-    absolute hside vside
+hang(h_side="left",v_side="top", z_index=false,selector="*")
+    absolute()
+    {h_side} 0
+    {v_side} 0
 
-    & > .inner
-        absolute opposite-position(hside)
+    & > {selector}
+        absolute()
+        {opposite-position(h_side)} 0
 
-    if z isnt false
+    if z_index isnt false
         z-index z_index
 
 

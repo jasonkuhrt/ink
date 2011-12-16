@@ -63,15 +63,16 @@ reset-ul()
     margin 0 o 0 0
 
 reset-button(background_color=transparent, border=none)
+    reset-box-model()
     background-color background_color
     border border
-    margin 0
+    color inherit
 
 reset-box-model()
   margin 0
   padding 0
-  border 0
-  outline 0
+  border none
+  outline none
 
 reset-font()
   font-weight inherit
