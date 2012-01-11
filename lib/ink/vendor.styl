@@ -228,7 +228,8 @@ border-radius()
   vendorize-property('border-radius', pos) unless augmented
 
 
-
+gd(grid_number)
+    unit(grid_number*gu,"px")
 
 /*
 TODO
@@ -253,7 +254,7 @@ vendorize-unit(prop,args)
                 
             else
                 if unitless(n) and n isnt 0
-                    n = unit(n*gu,"px")
+                    n = gd(n)
                 {prop} s("%s %s", n, unquote(important)) 
         else
             {prop} s("%s %s", n, unquote(important)) 
