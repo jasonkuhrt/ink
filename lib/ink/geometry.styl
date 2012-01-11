@@ -1,29 +1,43 @@
 fill(color)
     background-color color
 
-rectangle(wh)
-    w = wh[0]
-    h = wh[1] is null ? false : w[1]
 
+
+// SHAPES
+
+size(wh)
+    w = wh[0]
+    h = wh[1] is null ? false : wh[1]
     width  w
     height h if h
 
-//Special-case rectangle
-square(size)
-    rectangle size size
+box-model(size, _padding=false, _border=false, _box_sizing = border-box)
+    size(size)
+    padding    _padding if _padding
+    border     _border  if _border
+    box-sizing _box_sizing
+
+rectangle = box-model
+
+
+square(wh, _padding=false, _border=false, _box_sizing=border-box)
+    rectangle(wh wh, _padding, _border, _box_sizing)
 
 //TODO There is a stylus bug that prevents math within border-radius assignment
 //older versions of firefox (>4) do not support % radi, but later I can do this:
 //border-radius 50% 
-oval(w, h=w)
-    rectangle(w h)
+oval(wh, _padding=false, _border=false, _box_sizing=border-box)
+    w  = wh[0]
+    h  = h[1] is null ? wh[0] : wh[1]
+
     rh = w/2
     rv = h/2
-    border-radius rh / rv
 
-//Special-case oval
-circle(size)
-    oval(size)
+    border-radius rh / rv
+    rectangle(w h)
+
+circle(wh, _padding=false, _border=false, _box_sizing=border-box)
+    oval(wh wh, _padding, _border, _box_sizing)
 
 
 //TODO allow user to specify border side: top left right bottom
@@ -74,8 +88,3 @@ iconButton(url)
     background-repeat no-repeat
     background-position center center
 
-box-model(size, _padding = false, _border = false, _box_sizing = border-box)
-    rectangle(size)
-    padding    _padding if _padding
-    border     _border  if _border
-    box-sizing _box_sizing
