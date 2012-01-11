@@ -1,19 +1,22 @@
 fill(color)
     background-color color
 
-rectangle(w,h=w)
-    width w
-    height h
+rectangle(wh)
+    w = wh[0]
+    h = wh[1] is null ? false : w[1]
+
+    width  w
+    height h if h
 
 //Special-case rectangle
 square(size)
-    rectangle size
+    rectangle size size
 
 //TODO There is a stylus bug that prevents math within border-radius assignment
 //older versions of firefox (>4) do not support % radi, but later I can do this:
 //border-radius 50% 
 oval(w, h=w)
-    rectangle(w,h)
+    rectangle(w h)
     rh = w/2
     rv = h/2
     border-radius rh / rv
@@ -70,3 +73,9 @@ iconButton(url)
     background-image url(unquote(url))
     background-repeat no-repeat
     background-position center center
+
+box-model(size, _padding = false, _border = false, _box_sizing = border-box)
+    rectangle(size)
+    padding    _padding if _padding
+    border     _border  if _border
+    box-sizing _box_sizing
