@@ -254,7 +254,8 @@ vendorize-unit(prop,args)
                 
             else
                 if unitless(n) and n isnt 0
-                    n = gd(n)
+                    // TODO find out why the gd funtion does not work on the next line????
+                    n = unit(n*gu,"px")
                 {prop} s("%s %s", n, unquote(important)) 
         else
             {prop} s("%s %s", n, unquote(important)) 
