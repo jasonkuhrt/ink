@@ -124,6 +124,11 @@ As you may be able to deduce, this value triggers the Flex Box layout but makes 
 
 display()
     vendorize-property("display",arguments)
+    // TODO is there a better way to do this?
+    // In FF display box does not act like display block in that 
+    // it will not auto-expand to fill the width of a container
+    if arguments == "box"
+        width 100%
 
 box-orient()
     vendorize-property('box-orient', arguments)

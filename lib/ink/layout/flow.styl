@@ -139,24 +139,26 @@ matrix(length,gutter=gu,align="top",offset=0,move_method="margin",flush=true)
     // +2 because being flush means ignore gutters on the first item
     // and START doing stuff on the second item
     flush_number = 0
-    flush_number += 2 if flush
-
+    //flush_number += 2 if flush
 
     // gutters
     & > *:nth-child(n+{offset+flush_number})
-        prop = move_method +"-"+ getPushSide("horizontal")
-        vendorize-unit(prop,gutter)
+        css-shorthand(move_method,gutter)
     // +1 so that we START at the beginning of the second row
     & > *:nth-child(n+{offset+length+1})
-        prop = move_method +"-"+ getPushSide("vertical")
-        vendorize-unit(prop,gutter)
+        css-shorthand(move_method,gutter)
 
 
-    // flush-horizontal
+    // flush the last column
+    & > *:nth-child({length}n+{offset+length})
+        prop = move_method +"-"+ oppositeSide(getPushSide("horizontal"))
+        {prop} 0
+
+    // flush the first column
     // +1 so that we START at the beginning of the second row
     //TODO
     //- flush number?
-    & > *:nth-child({length}n+{offset+length+1})
+    & > *:nth-child({length}n+{offset+length+1}), & > :first-child
         prop = move_method +"-"+ getPushSide("horizontal")
         {prop} 0
     

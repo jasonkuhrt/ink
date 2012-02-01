@@ -54,8 +54,13 @@ relative()
 
 hang(h_side="left",v_side="top", z_index=false,selector="*")
     absolute()
+
     {h_side} 0
-    {v_side} 0
+
+    if v_side is "center"
+      top 50%
+    else
+      {v_side} 0
 
     & > {selector}
         absolute()
