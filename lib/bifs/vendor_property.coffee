@@ -38,8 +38,8 @@ class VendorProperty
             prefix
 
         Object.merge @, options
-        
-            
+
+
 
     generateDeclarations: (value)->
         #TODO, styl_value correct?
@@ -53,12 +53,12 @@ class VendorProperty
             styl_prefix.push(new nodes.Literal(prefix))
             styl_declaration = @filterDeclaration(styl_prefix,styl_property,styl_value)
             styl_declarations.push(styl_declaration) if styl_declaration
-        
+
         # WITHOUT VENDOR (THE ACTUAL-AND-OR-FUTURE CSS SPEC)
         if @include_official
             styl_declaration = @filterDeclaration("",styl_property,styl_value)
             styl_declarations.push(styl_declaration) if styl_declaration
-        
+
         return styl_declarations
 
     filterDeclaration: (styl_prefix,styl_property,styl_value)->
@@ -70,9 +70,9 @@ class VendorProperty
             n
         else
             new nodes.Property([styl_prefix,styl_property], styl_value)
-        
-    
-    
+
+
+
 
 class VendorIndex
     all_prefixes: [
@@ -83,7 +83,7 @@ class VendorIndex
     ]
 
     properties: {}
-   
+
     ###
 
     prefixes: specific to the property being registered
@@ -159,7 +159,7 @@ vendor_index.register "*", "
 (exports.vendorizeProperty = (property,value)->
 
     # ASSERTING
-    
+
     #utils.assertType(property, 'expression', 'property')
     property = utils.unwrap(property).first
     #utils.assertString(property, 'property')
@@ -176,6 +176,6 @@ vendor_index.register "*", "
     else
         vendor_index.get(property,value)
 
-    
-    
+
+
 ).raw = true

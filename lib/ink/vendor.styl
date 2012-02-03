@@ -1,5 +1,68 @@
 @import 'config'
 
+all_browser_vendors = moz ms o webkit
+vendorize( vendorize_type, property_name, applicable_browser_vendors=null, value=null )
+
+  if value is null
+    // User did not pass in custom list of applicable browser vendors
+    // so assume all browser vendors, and adjust argument values accordingly
+    value = arguments[2]
+    applicable_browser_vendors = all_browser_vendors
+
+  vendorize_what = vendorize_type is "value" ? value : property_name
+
+  for applicable_browser_vendor in applicable_browser_vendors
+    vendored_thing = s( "-%s-%s", unquote(applicable_browser_vendor), unquote(vendorize_what) )
+    //https://github.com/LearnBoost/stylus/issues/553
+    //add-property( vendored_property_name, value )
+    if vendorize_type is "value"
+      {property_name} vendored_thing
+    else
+      {vendored_thing} value
+
+  // It is important to put the prefixless property last
+  // because modern browsers will use it over previous prefixed varients
+  {property_name} value
+  //add-property( property_name, value )
+
+vendorize-value( property_name, applicable_browser_vendors=null, value=null )
+  vendorize( "value", property_name, applicable_browser_vendors, value)
+
+vendorize-property( property_name, applicable_browser_vendors=null, value=null )
+  vendorize( "property", property_name, applicable_browser_vendors, value)
+
+
+gd(grid_number)
+    unit(grid_number*gu,"px")
+/*
+TODO
+//cross-browser support for units
+- clean up how 0<unit> cases are handled
+- factor out a few functions...
+- how can short-circuiting help? Check once stylus supports it
+*/
+vendorize-unit(prop,args)
+    n = args[0]
+    if n isnt ignore_side
+        important = args[1] isnt null ? args[1] : ''
+
+        if type(n) is "unit" 
+            n = 0 if n == 0
+
+            if unit(n) is "rem"
+                nRem = n
+                nPx = unit(n,"px") * base_font_size
+                {prop} s("%s %s", nPx, unquote(important))
+                {prop} s("%s %s", nRem, unquote(important)) 
+                
+            else
+                if unitless(n) and n isnt 0
+                    // TODO find out why the gd funtion does not work on the next line????
+                    n = unit(n*gu,"px")
+                {prop} s("%s %s", n, unquote(important)) 
+        else
+            {prop} s("%s %s", n, unquote(important))
+
 
 user-select()
     vendorize-property('user-select', arguments)
@@ -10,31 +73,31 @@ user-modify()
 // COLUMN
 
 columns()
-  vendorize-property('columns', arguments)
+  vendorize-property( "columns", moz webkit, arguments )
 
 column-count()
-  vendorize-property('column-count', arguments)
+  vendorize-property('column-count', moz webkit, arguments)
 
 column-span()
-  vendorize-property('column-span', arguments)
+  vendorize-property('column-span', moz webkit, arguments)
 
 column-gap()
-  vendorize-property('column-gap', arguments)
+  vendorize-property('column-gap', moz webkit, arguments)
 
 column-width()
-  vendorize-property('column-width', arguments)
+  vendorize-property('column-width', moz webkit, arguments)
 
 column-rule()
-  vendorize-property('column-rule', arguments)
+  vendorize-property('column-rule', moz webkit, arguments)
 
 column-rule-width()
-  vendorize-property('column-rule-width', arguments)
+  vendorize-property('column-rule-width', moz webkit, arguments)
 
 column-rule-style()
-  vendorize-property('column-rule-style', arguments)
+  vendorize-property('column-rule-style', moz webkit, arguments)
 
 column-rule-color()
-  vendorize-property('column-rule-color', arguments)
+  vendorize-property('column-rule-color', moz webkit, arguments)
 
 
 
@@ -42,24 +105,24 @@ column-rule-color()
 // BACKGROUNDS AND BOARDERS
 
 background-size()
-  vendorize-property('background-size', arguments)
+  vendorize-property( "background-size", moz, arguments )
 
 background-origin()
-  vendorize-property('background-origin', arguments)
+  vendorize-property( "background-origin", moz, arguments )
 
 background-clip()
-  vendorize-property('background-clip', arguments)
+  vendorize-property('background-clip', moz webkit, arguments)
 
 
 
 border-image()
-  vendorize-property('border-image', arguments)
+  vendorize-property( "border-image", o moz webkit, arguments )
 
 text-overflow()
-  vendorize-property('text-overflow', arguments)
+  vendorize-property( "text-overflow", o ms, arguments )
 
 font-feature-settings()
-  vendorize-property('font-feature-settings', arguments)
+  vendorize-property('font-feature-settings', moz webkit, arguments)
 
 hyphens()
   vendorize-property('hyphens',arguments)
@@ -123,40 +186,36 @@ As you may be able to deduce, this value triggers the Flex Box layout but makes 
 */
 
 display()
-    vendorize-property("display",arguments)
-    // TODO is there a better way to do this?
+  if arguments is "box"
+    vendorize-value( "display", arguments )
     // In FF display box does not act like display block in that 
     // it will not auto-expand to fill the width of a container
-    if arguments == "box"
-        width 100%
+    width 100%
 
 box-orient()
-    vendorize-property('box-orient', arguments)
+    vendorize-property( "box-orient", arguments )
 
 box-pack()
-   vendorize-property('box-pack',arguments)
+   vendorize-property( "box-pack",arguments )
 
 box-align()
-    vendorize-property('box-align',arguments)
+    vendorize-property( "box-align", arguments )
 
 box-ordinal-group()
-    vendorize-property('box-ordinal-group',arguments)
+    vendorize-property( "box-ordinal-group", arguments )
 
 box-direction()
-    vendorize-property('box-direction',arguments)
+    vendorize-property( "box-direction", arguments )
 
 box-flex-group()
-    vendorize-property('box-flex-group',arguments)
+    vendorize-property( "box-flex-group", arguments )
 
 box-lines()
-    vendorize-property('box-lines',arguments)
-
-box-sizing()
-    vendorize-property('box-sizing',arguments)
+    vendorize-property( "box-lines", arguments )
 
 //on sub-elements of a box
 box-flex()
-    vendorize-property('box-flex', arguments)
+    vendorize-property( "box-flex", arguments )
 /*
 box(flexes=false,orient="horizontal",align="start")
     vendorValue("display","box")
@@ -168,11 +227,12 @@ box(flexes=false,orient="horizontal",align="start")
             & > *:nth-child({i+1})
                 box-flex flex
 */
+
 box-shadow()
-  vendorize-property('box-shadow', arguments)
+  vendorize-property( "box-shadow", moz webkit, arguments )
 
 box-sizing()
-  vendorize-property('box-sizing', arguments)
+  vendorize-property( "box-sizing", moz webkit, arguments )
  
 
 
@@ -233,37 +293,6 @@ border-radius()
   vendorize-property('border-radius', pos) unless augmented
 
 
-gd(grid_number)
-    unit(grid_number*gu,"px")
-
-/*
-TODO
-//cross-browser support for units
-- clean up how 0<unit> cases are handled
-- factor out a few functions...
-- how can short-circuiting help? Check once stylus supports it
-*/
-vendorize-unit(prop,args)
-    n = args[0]
-    if n isnt ignore_side
-        important = args[1] isnt null ? args[1] : ''
-
-        if type(n) is "unit" 
-            n = 0 if n == 0
-
-            if unit(n) is "rem"
-                nRem = n
-                nPx = unit(n,"px") * base_font_size
-                {prop} s("%s %s", nPx, unquote(important))
-                {prop} s("%s %s", nRem, unquote(important)) 
-                
-            else
-                if unitless(n) and n isnt 0
-                    // TODO find out why the gd funtion does not work on the next line????
-                    n = unit(n*gu,"px")
-                {prop} s("%s %s", n, unquote(important)) 
-        else
-            {prop} s("%s %s", n, unquote(important)) 
 
 
 
