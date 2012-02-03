@@ -5,7 +5,7 @@
 
 var stylus = require('stylus')
   , basename = require('path').basename
-  , nib = require('../')
+  , ink = require('../')
   , fs = require('fs');
 
 /**
@@ -36,7 +36,7 @@ function test(test, fn) {
     if (err) throw err;
 
     var style = stylus(str)
-      .use(nib())
+      .use(ink())
       .set('filename', path)
       .include(__dirname + '/images')
       .include(__dirname + '/cases/import.basic');
