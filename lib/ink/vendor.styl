@@ -12,7 +12,7 @@ vendorize( vendorize_type, property_name, applicable_browser_vendors=null, value
   vendorize_what = vendorize_type is "value" ? value : property_name
 
   for applicable_browser_vendor in applicable_browser_vendors
-    vendored_thing = s( "-%s-%s", unquote(applicable_browser_vendor), unquote(vendorize_what) )
+    vendored_thing = "-%s-%s" % unquote(applicable_browser_vendor) unquote(vendorize_what)
     //https://github.com/LearnBoost/stylus/issues/553
     //add-property( vendored_property_name, value )
     if vendorize_type is "value"
