@@ -38,8 +38,7 @@ function test(test, fn) {
     var style = stylus(str)
       .use(ink())
       .set('filename', path)
-      .include(__dirname + '/images')
-      .include(__dirname + '/cases/import.basic');
+      .import('../../lib/ink/without_classes');
 
     if (~test.indexOf('compress')) style.set('compress', true);
 

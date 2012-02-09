@@ -1,0 +1,16 @@
+body {
+  -moz-transition    : margin-top 500ms;
+  -ms-transition     : margin-top 500ms;
+  -o-transition      : margin-top 500ms;
+  -webkit-transition : margin-top 500ms;
+  transition         : margin-top 500ms;
+}
+
+body {
+  -moz-transition    : border-color, padding, height 1s;
+  -ms-transition     : border-color, padding, height 1s;
+  -o-transition      : border-color, padding, height 1s;
+  -webkit-transition : border-color, padding, height 1s;
+  transition         : border-color, padding, height 1s;
+}
+
